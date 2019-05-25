@@ -1,20 +1,33 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "",
+  "description": "��#\u0000 \u0000p\u0000i\u0000z\u0000z\u0000a\u0000-\u0000d\u0000e\u0000l\u0000i\u0000v\u0000e\u0000r\u0000y\u0000-\u0000B\u0000a\u0000c\u0000k\u0000e\u0000n\u0000d\u0000\r\u0000 \u0000",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon app.js"
   },
-  "author": "",
+  "author": "Harshita Agarwal",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^3.0.6",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "express": "^4.17.0",
-    "mongoose": "^5.5.10",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.5.11",
+    "nodemon": "^1.19.1",
     "passport": "^0.4.0",
-    "passport-facebook": "^3.0.0"
-  }
+    "passport-facebook": "^3.0.0",
+    "passport-jwt": "^4.0.0",
+    "validator": "^11.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HarshitaAgarwal09/pizza-delivery-Backend.git"
+  },
+  "bugs": {
+    "url": "https://github.com/HarshitaAgarwal09/pizza-delivery-Backend/issues"
+  },
+  "homepage": "https://github.com/HarshitaAgarwal09/pizza-delivery-Backend#readme"
 }
