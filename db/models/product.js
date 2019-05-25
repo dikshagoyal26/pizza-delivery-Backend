@@ -1,5 +1,6 @@
 var connection = require("../connection");
 const Schema = connection.Schema;
+
 var productSchema = new Schema({
   id: {
     type: String,
