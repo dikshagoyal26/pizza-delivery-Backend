@@ -1,28 +1,56 @@
 const ProductModel = require("../models/product");
+const appCodes = require("../../utils/appcodes");
 
 const productOperations = {
   getAll(prodObject, res) {
     ProductModel.find()
       .then(products => {
-        if (!products) {
-          res.status(404).json({ msg: "No products found" });
+        if (products.length == 0) {
+          res.status(appCodes.RESOURCE_NOT_FOUND).json({
+            status: appCodes.ERROR,
+            msg: "No products found"
+          });
         } else {
-          res.json("Display All Products");
-          res.json(products);
+          res.status(appCodes.OK).json({
+            status: appCodes.SUCCESS,
+            msg: "Display All Products",
+            list: products
+          });
         }
       })
-      .catch(err => res.status(404).json(err));
+      .catch(err => {
+        res.status(appCodes.SERVER_ERROR).json({
+          status: appCodes.FAIL,
+          message: "Error in DB During Find Operation",
+          error: err
+        });
+      });
   },
+
   getById(prodObject, res, product_id) {
-    ProductModel.find({ product: product_id })
+    ProductModel.find({ productid: product_id })
       .then(product => {
-        if (!product) {
-          res.status(404).json({ msg: "No Product found " });
+        if (product.length == 0) {
+          res.status(appCodes.RESOURCE_NOT_FOUND).json({
+            status: appCodes.ERROR,
+            msg: "No products found"
+          });
         } else {
-          res.json("Display Product with product id " + product_id + product);
+          res.status(appCodes.OK).json({
+            status: appCodes.SUCCESS,
+            msg: "Display Product with product id ",
+            product_id: product_id,
+            product: product
+          });
         }
       })
-      .catch(err => res.status(404).json({ msg: "There is no product" }));
+      .catch(err =>
+        res.status(appCodes.SERVER_ERROR).json({
+          status: appCodes.FAIL,
+          msg: "Error in DB During Find Operation",
+          error: err
+        })
+      );
   },
   add(prodObject, res) {},
   delete(prodObject, res) {},
