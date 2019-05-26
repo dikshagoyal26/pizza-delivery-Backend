@@ -1,7 +1,7 @@
 const UserModel = require("../models/user");
 const appCodes = require("../../utils/appcodes");
 const encryptOperations = require("../../utils/encrypt");
-
+const tokenOperations = require("../../utils/token");
 const userOperations = {
   add(userObject, response) {
     userObject.password = encryptOperations.encryptPassword(
@@ -22,18 +22,6 @@ const userOperations = {
           .json({ status: appCodes.SUCCESS, message: "Record Added" });
       }
     });
-    // add(userObject) {
-    //   userObject.password = encryptOperations.encryptPassword(
-    //     //password encryption
-    //     userObject.password
-    //   );
-    //   UserModel.create(userObject, err => {
-    //     if (err) {
-    //       console.log("err", err);
-    //     } else {
-    //       console.log("record add");
-    //     }
-    //   });
   },
   delete() {},
   update() {},
@@ -50,10 +38,14 @@ const userOperations = {
           if (
             encryptOperations.compareHash(userObject.password, doc.password) //match pwd
           ) {
+            token = tokenOperations.generateToken({
+              userid: userObject.userid
+            });
             response.status(appCodes.OK).json({
               status: appCodes.SUCCESS,
               message: "Welcome " + doc.userid,
-              record: doc
+              record: doc,
+              token: token
             });
           } else {
             response.status(appCodes.RESOURCE_NOT_FOUND).json({
@@ -72,4 +64,3 @@ const userOperations = {
   }
 };
 module.exports = userOperations;
-// userOperations.add({ userid: "test123", password: "abcd123", name: "testing" });
