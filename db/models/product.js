@@ -2,9 +2,9 @@ var connection = require("../connection");
 const Schema = connection.Schema;
 
 var productSchema = new Schema({
-  id: {
+  productid: {
     type: String,
-    required: true,
+    //required: true,
     unique: true
   },
   name: {
@@ -13,24 +13,24 @@ var productSchema = new Schema({
     unique: true
   },
   image: {
-    type: String,
-    required: true
+    type: String
+    // required: true
   },
   price: {
     type: String,
     required: true
   },
   ingredients: {
-    type: String,
-    required: true
+    type: String
+    //required: true
   },
   category: {
-    type: String,
-    required: true
+    type: String
+    //required: true
   },
   toppings: {
-    type: String,
-    required: true
+    type: String
+    //required: true
   },
   description: {
     type: String
@@ -38,5 +38,5 @@ var productSchema = new Schema({
   }
 });
 
-const productModel = connection.model("products", productSchema);
+const productModel = connection.model("users", productSchema);
 module.exports = productModel;
