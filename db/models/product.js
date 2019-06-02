@@ -38,5 +38,5 @@ var productSchema = new Schema({
   }
 });
 
-const productModel = connection.model("users", productSchema);
+const productModel = connection.model("products", productSchema);
 module.exports = productModel;

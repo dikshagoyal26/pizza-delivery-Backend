@@ -60,14 +60,19 @@ const productOperations = {
     const { errors, isValid } = validateProductInput(prodObject);
 
     if (!isValid) {
-      return res.status().json();
+      return res
+        .status(404)
+        .json({ msg: "Product info not valid", errors: errors });
     }
     const newProduct = new ProductModel({
       productid: prodObject.productid,
       name: prodObject.name,
-      price: prodObject.price
+      price: prodObject.price,
+      ingredients: prodObject.ingredients,
+      category: prodObject.category,
+      toppings: prodObject.toppings,
+      description: prodObject.description
     });
-
     newProduct
       .save()
       .then(product => {
@@ -92,11 +97,46 @@ const productOperations = {
     ProductModel.findOneAndRemove({ productid: prodObject.productid })
       .then(product => {
         product.remove().then(() => {
-          console.log("deleted");
+          res.status(appCodes.OK).json({
+            status: appCodes.SUCCESS,
+            msg: "Product Delted"
+          });
         });
       })
-      .catch(err => console.log("EEEEEEEERRRRRR" + err));
+      .catch(err => res.json({ msg: "Error in deletion", error: err }));
   },
-  update(prodObject, res) {}
+  //Updating the product if exists
+  update(prodObject, res) {
+    const { errors, isValid } = validateProductInput(prodObject);
+
+    if (!isValid) {
+      return res
+        .status(404)
+        .json({ msg: "Product info not valid", errors: errors });
+    }
+
+    ProductModel.findOne({ productid: prodObject.productid })
+      .then(product => {
+        if (product) {
+          ProductModel.findOneAndUpdate(
+            { productid: prodObject.productid },
+            { $set: prodObject },
+            { new: true }
+          )
+            .then(product =>
+              res.json({ msg: "Product Updated", product: product })
+            )
+            .catch(err => res.json({ msg: "Error in updating", error: err }));
+        } else {
+          res.json({
+            msg: "Product not found and Nothing Updated"
+          });
+        }
+      })
+      .catch(err => {
+        res.json({ msg: "Error in FindOne", error: err });
+      });
+  }
 };
+
 module.exports = productOperations;
