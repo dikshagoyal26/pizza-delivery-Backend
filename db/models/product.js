@@ -4,7 +4,7 @@ const Schema = connection.Schema;
 var productSchema = new Schema({
   productid: {
     type: String,
-    //required: true,
+    required: true,
     unique: true
   },
   name: {
@@ -14,27 +14,27 @@ var productSchema = new Schema({
   },
   image: {
     type: String
-    // required: true
+    //required: true
   },
   price: {
     type: String,
     required: true
   },
   ingredients: {
-    type: String
-    //required: true
+    type: String,
+    required: true
   },
   category: {
-    type: String
-    //required: true
+    type: String,
+    required: true
   },
   toppings: {
-    type: String
-    //required: true
+    type: String,
+    required: true
   },
   description: {
-    type: String
-    //required: true
+    type: String,
+    required: true
   }
 });
 
