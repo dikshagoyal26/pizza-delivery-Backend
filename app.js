@@ -8,7 +8,7 @@ app.use(bodyParser.json());
 
 app.use("/", require("./routes/api/reglogin"));
 app.use("/user", require("./routes/api/user"));
-
+app.use("/cart", require("./routes/api/cart"));
 app.use((req, res) => {
   res.send("you have typed something wrong");
 });

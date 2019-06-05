@@ -1,5 +1,6 @@
 const express = require("express");
 const authRoute = express.Router();
+const userCrud = require("../../db/helpers/userCrud");
 
 const validateRegisterInput = require("../../validation/register");
 const validateLoginInput = require("../../validation/login");
@@ -10,15 +11,13 @@ const validateLoginInput = require("../../validation/login");
 authRoute.post("/register", (request, response) => {
   // console.log("request is", request.body);
   const { errors, isValid } = validateRegisterInput(req.body);
-
   if (!isValid) {
     return res.status(400).json(errors);
   }
-
   var json = request.body;
-  const userCrud = require("../../db/helpers/userCrud");
   userCrud.add(json, response);
 });
+
 //@route Post /login
 //@desc Login users route
 //@access Public
@@ -27,17 +26,41 @@ authRoute.post("/login", (request, response) => {
   if (!isValid) {
     return res.status(404).json(errors);
   }
-
   const json = request.body;
-  const userCrud = require("../../db/helpers/userCrud");
   userCrud.search(json, response);
 });
-// Route.delete("/delete", (request, response) => {
-//   const json = request.body;
-//   const userCrud = require("../../../db/helpers/userCrud");
-//   userCrud.delete(json, response);
-// });
-// Route.put("/update", (request, response) => {});
+
+//@route Post /findbyid
+//@desc forget password find email id users route
+//@access Public
+authRoute.post("/findbyid", (request, response) => {
+  const json = request.body;
+  userCrud.findbyid(json, response);
+});
+
+//@route Put /resetpwd
+//@desc forget password reset password users route
+//@access Public
+app.put("/resetpwd", (req, res) => {
+  let data = req.body;
+  userOperations.resetpwd(data, res);
+});
+
+//@route Post /deleteone
+//@desc delete user account users route
+//@access Public
+app.delete("/deleteone", (req, res) => {
+  let data = req.body;
+  userOperations.delteone(data, res);
+});
+
+//@route Put /update
+//@desc update user account users route
+//@access Public
+Route.put("/update", (req, response) => {
+  let data = req.body;
+  userOperations.update(data, res);
+});
 
 //@route Post /oauth
 //@desc Register users using OAUTH route

@@ -1,11 +1,11 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "",
+  "description": "Pizza Delivery application",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js"
+    "start": "node app.js"
   },
   "author": "",
   "license": "ISC",
@@ -16,6 +16,16 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.5.10",
     "passport": "^0.4.0",
-    "passport-facebook": "^3.0.0"
-  }
+    "passport-facebook": "^3.0.0",
+    "validator": "^11.0.0",
+    "passport-jwt": "^4.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dikshagoyal26/pizza-delivery-Backend.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dikshagoyal26/pizza-delivery-Backend/issues"
+  },
+  "homepage": "https://github.com/dikshagoyal26/pizza-delivery-Backend#readme"
 }
