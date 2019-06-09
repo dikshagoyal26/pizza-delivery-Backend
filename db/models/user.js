@@ -2,6 +2,7 @@ var connection = require("../connection");
 const Schema = connection.Schema;
 var userSchema = new Schema({
   userid: {
+    //or googleID in case of auth register
     type: String,
     required: true,
     unique: true
@@ -23,6 +24,9 @@ var userSchema = new Schema({
   date: {
     type: String,
     default: date.now()
+  },
+  picture: {
+    type: String
   }
 });
 

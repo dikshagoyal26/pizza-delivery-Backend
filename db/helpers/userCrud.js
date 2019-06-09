@@ -2,6 +2,8 @@ const UserModel = require("../models/user");
 const appCodes = require("../../utils/appcodes");
 const encryptOperations = require("../../utils/encrypt");
 const tokenOperations = require("../../utils/token");
+const sendMail = require("../../utils/mail"); //nodemailer
+
 const userOperations = {
   add(userObject, response) {
     userObject.password = encryptOperations.encryptPassword(
@@ -17,6 +19,8 @@ const userOperations = {
         });
       } else {
         console.log("Record Added..");
+        sendMail(userObject.userid, "register");
+
         response
           .status(appCodes.OK)
           .json({ status: appCodes.SUCCESS, message: "Record Added" });
@@ -65,6 +69,7 @@ const userOperations = {
         } else {
           if (doc) {
             console.log("Record updated ");
+            sendMail(userObject.userid, "reset");
 
             response.status(appCodes.OK).json({
               status: appCodes.SUCCESS,

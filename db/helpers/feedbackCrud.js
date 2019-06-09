@@ -1,9 +1,11 @@
-const cartModel = require("../models/cart");
+const feedbackModel = require("../models/feedback");
 const appCodes = require("../../utils/appcodes");
 const tokenOperations = require("../../utils/token");
-const cartOperations = {
-  add(cartObject, response) {
-    cartModel.create(cartObject, err => {
+const sendMail = require("../../utils/mail"); //nodemailer
+
+const feedbackOperations = {
+  add(feedbackObject, response) {
+    feedbackModel.create(feedbackObject, err => {
       if (err) {
         console.log("Error in Record Add");
         response.status(appCodes.SERVER_ERROR).json({
@@ -12,16 +14,18 @@ const cartOperations = {
         });
       } else {
         console.log("Record Added..");
+        sendMail(userObject.userid, "feedbackr");
+
         response
           .status(appCodes.OK)
           .json({ status: appCodes.SUCCESS, message: "Record Added" });
       }
     });
   },
-  update(cartObject,response){
-    cartModel.findOneAndUpdate(
-      { userid: cartObject.userid },
-      { $set:  cartObject },
+  update(feedbackObject, response) {
+    feedbackModel.findOneAndUpdate(
+      { userid: feedbackObject.userid },
+      { $set: feedbackObject },
       { new: true },
       (err, doc) => {
         if (err) {
@@ -48,8 +52,8 @@ const cartOperations = {
       }
     );
   },
-  delete(cartObject, response) {
-    cartModel.findOneAndRemove({ userid: cartObject.userid }, err => {
+  delete(feedbackObject, response) {
+    feedbackModel.findOneAndRemove({ userid: feedbackObject.userid }, err => {
       if (err) {
         response.status(appCodes.RESOURCE_NOT_FOUND).json({
           status: appCodes.FAIL,
@@ -64,8 +68,8 @@ const cartOperations = {
       }
     });
   },
-  search(cartObject, response) {
-    cartModel.findOne({ userid: cartObject.userid }, (err, doc) => {
+  search(feedbackObject, response) {
+    feedbackModel.findOne({ userid: feedbackObject.userid }, (err, doc) => {
       //match userid
       if (err) {
         response.status(appCodes.SERVER_ERROR).json({
@@ -74,19 +78,16 @@ const cartOperations = {
         });
       } else {
         if (doc) {
-          
-            token = tokenOperations.generateToken({
-              userid: cartObject.userid
-            });
-            response.status(appCodes.OK).json({
-              status: appCodes.SUCCESS,
-              message: "Welcome " + doc.userid,
-              record: doc,
-              token: token
-            });
-            
-            }
-         else {
+          token = tokenOperations.generateToken({
+            userid: feedbackObject.userid
+          });
+          response.status(appCodes.OK).json({
+            status: appCodes.SUCCESS,
+            message: "Welcome " + doc.userid,
+            record: doc,
+            token: token
+          });
+        } else {
           response.status(appCodes.RESOURCE_NOT_FOUND).json({
             status: appCodes.FAIL,
             message: "Invalid Userid or Password "
@@ -96,4 +97,4 @@ const cartOperations = {
     });
   }
 };
-module.exports = cartOperations;
+module.exports = feedbackOperations;
