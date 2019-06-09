@@ -17,4 +17,5 @@ userRoute.delete("/delete", (req, res) => {
   userCrud.delete(json, res);
 });
 userRoute.put("/update", (req, res) => {});
+
 module.exports = userRoute;

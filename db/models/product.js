@@ -1,7 +1,8 @@
 var connection = require("../connection");
 const Schema = connection.Schema;
+
 var productSchema = new Schema({
-  id: {
+  productid: {
     type: String,
     required: true,
     unique: true
@@ -12,8 +13,8 @@ var productSchema = new Schema({
     unique: true
   },
   image: {
-    type: String,
-    required: true
+    type: String
+    //required: true
   },
   price: {
     type: String,
@@ -32,10 +33,10 @@ var productSchema = new Schema({
     required: true
   },
   description: {
-    type: String
-    //required: true
+    type: String,
+    required: true
   }
 });
 
-const productModel = connection.model("users", productSchema);
+const productModel = connection.model("products", productSchema);
 module.exports = productModel;
