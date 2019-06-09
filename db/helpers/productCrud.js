@@ -5,8 +5,16 @@ const validateProductInput = require("../../validation/product");
 const productOperations = {
   //Get the list of all the products
   getAll(prodObject, res) {
+    // Website you wish to allow to connect
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    // Request headers you wish to allow
+    res.setHeader('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers,X-Access-Token,XKey,Authorization');
+   
     ProductModel.find()
       .then(products => {
+        
         if (products.length == 0) {
           res.status(appCodes.RESOURCE_NOT_FOUND).json({
             status: appCodes.ERROR,
@@ -31,6 +39,13 @@ const productOperations = {
   },
   //Get products with the product_id
   getById(prodObject, res, product_id) {
+    // Website you wish to allow to connect
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    // Request headers you wish to allow
+    res.setHeader('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers,X-Access-Token,XKey,Authorization');
+   
     ProductModel.find({ productid: product_id })
       .then(product => {
         if (product.length == 0) {
