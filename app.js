@@ -17,6 +17,7 @@ app.use(
   })
 );
 app.use(passport.initialize());
+app.use(require("./utils/cors"));
 
 app.use("/user", require("./routes/api/reglogin"));
 app.use("/auth", require("./routes/api/auth"));
