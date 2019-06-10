@@ -41,7 +41,7 @@ authRoute.post("/findbyid", (request, response) => {
 //@route Put /resetpwd
 //@desc forget password reset password users route
 //@access Public
-app.put("/resetpwd", (req, res) => {
+authRoute.put("/resetpwd", (req, res) => {
   let data = req.body;
   userOperations.resetpwd(data, res);
 });
@@ -49,7 +49,7 @@ app.put("/resetpwd", (req, res) => {
 //@route Post /deleteone
 //@desc delete user account users route
 //@access Public
-app.delete("/deleteone", (req, res) => {
+authRoute.delete("/deleteone", (req, res) => {
   let data = req.body;
   userOperations.delteone(data, res);
 });
@@ -57,7 +57,7 @@ app.delete("/deleteone", (req, res) => {
 //@route Put /update
 //@desc update user account users route
 //@access Public
-Route.put("/update", (req, response) => {
+authRoute.put("/update", (req, response) => {
   let data = req.body;
   userOperations.update(data, res);
 });

@@ -5,8 +5,10 @@ const validateProductInput = require("../../validation/product");
 const productOperations = {
   //Get the list of all the products
   getAll(prodObject, res) {
+    
     ProductModel.find()
       .then(products => {
+        
         if (products.length == 0) {
           res.status(appCodes.RESOURCE_NOT_FOUND).json({
             status: appCodes.ERROR,
@@ -31,6 +33,7 @@ const productOperations = {
   },
   //Get products with the product_id
   getById(prodObject, res, product_id) {
+   
     ProductModel.find({ productid: product_id })
       .then(product => {
         if (product.length == 0) {

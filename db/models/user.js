@@ -23,7 +23,7 @@ var userSchema = new Schema({
   },
   date: {
     type: String,
-    default: date.now()
+    default: Date.now()
   },
   picture: {
     type: String
