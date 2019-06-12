@@ -14,7 +14,7 @@ const tokenOperations = {
     }
   }
 };
-var token = tokenOperations.generateToken({ userid: "amit" });
-console.log("Token is ", token);
-tokenOperations.verifyToken(token);
+// var token = tokenOperations.generateToken({ userid: "amit" });
+// console.log("Token is ", token);
+// tokenOperations.verifyToken(token);
 module.exports = tokenOperations;

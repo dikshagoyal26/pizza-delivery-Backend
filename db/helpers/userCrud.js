@@ -86,6 +86,7 @@ const userOperations = {
     );
   },
   update(userObject, response) {
+    userObject.password = encryptOperations.encrypt(userObject.password);
     UserModel.findOneAndUpdate(
       { userid: userObject.userid },
       { $set: userObject },

@@ -13,7 +13,7 @@ authRoute.get("/dashboard", passport.authenticate("google"), (req, res) => {
   const sendMail = require("../../utils/mail"); //nodemailer
   sendMail(userObject.userid, "register");
 
-  response
+  res
     .status(appCodes.OK)
     .json({ status: appCodes.SUCCESS, message: "Record Added" });
 });

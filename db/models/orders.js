@@ -1,47 +1,22 @@
 var connection = require("../connection");
 const Schema = connection.Schema;
-var userSchema = new Schema({
+var OrderSchema = new Schema({
+  products: {
+    type: [String],
+    required: true
+  },
   userid: {
-    //Email
-    //or googleID in case of auth register
-    type: String,
-    required: true,
-    unique: true
+    type: String, //value will be _id of usermodel
+    required: true // ref: 'users'
   },
-  password: {
-    type: String,
-    required: true
-    // default: "ABCD"
-  },
-  firstname: {
-    type: String,
-    required: true
-  },
-  lastname: {
-    type: String
-  },
-  phone: {
-    type: Number
-  },
-  dob: {
-    type: Date
-  },
-  // email: {
-  //   type: String,
-  //   required: true,
-  //   unique: true
-  // },
   date: {
     type: Date,
     default: Date.now()
   },
-  picture: {
-    type: String
+  paymentmode: {
+    type: String,
+    required: true
   },
-  // address: {
-  //   type: Schema.Types.ObjectId,
-  //   ref: "Addresses"
-  // }
   address: [
     {
       type: {
@@ -73,8 +48,19 @@ var userSchema = new Schema({
         required: true
       }
     }
-  ]
+  ],
+  name: {
+    type: String,
+    required: true
+  },
+  total: {
+    type: Number,
+    required: true
+  },
+  status: {
+    type: String
+  }
 });
 
-const userModel = connection.model("users", userSchema);
-module.exports = userModel;
+const OrderModel = connection.model("users", OrderSchema);
+module.exports = OrderModel;

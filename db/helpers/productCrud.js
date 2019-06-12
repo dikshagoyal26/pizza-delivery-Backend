@@ -94,16 +94,20 @@ const productOperations = {
   },
   //Delete the product
   delete(prodObject, res) {
-    ProductModel.findOneAndRemove({ productid: prodObject.productid })
-      .then(product => {
-        product.remove().then(() => {
-          res.status(appCodes.OK).json({
-            status: appCodes.SUCCESS,
-            msg: "Product Delted"
-          });
+    ProductModel.findOneAndRemove({ productid: prodObject.productid }, err => {
+      if (err) {
+        response.status(appCodes.RESOURCE_NOT_FOUND).json({
+          status: appCodes.FAIL,
+          message: "Error in record delete "
         });
-      })
-      .catch(err => res.json({ msg: "Error in deletion", error: err }));
+      } else {
+        console.log("Record Deleted");
+        response.status(appCodes.OK).json({
+          status: appCodes.SUCCESS,
+          message: "Record Deleted"
+        });
+      }
+    });
   },
   //Updating the product if exists
   update(prodObject, res) {

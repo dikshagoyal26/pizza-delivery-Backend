@@ -8,6 +8,8 @@ module.exports = function validateProductInput(data) {
   data.category = !isEmpty(data.category) ? data.category : "";
   data.toppings = !isEmpty(data.toppings) ? data.toppings : "";
   data.description = !isEmpty(data.description) ? data.description : "";
+  data.productid = !isEmpty(data.productid) ? data.productid : "";
+  data.price = !isEmpty(data.price) ? data.price : "";
 
   if (Validator.isEmpty(data.name)) {
     errors.name = "Product name is required";
@@ -23,6 +25,12 @@ module.exports = function validateProductInput(data) {
   }
   if (Validator.isEmpty(data.description)) {
     errors.description = "Product description is required";
+  }
+  if (Validator.isEmpty(data.productid)) {
+    errors.description = "Product ID is required";
+  }
+  if (Validator.isEmpty(data.price)) {
+    errors.description = "Price is required";
   }
   return {
     errors,

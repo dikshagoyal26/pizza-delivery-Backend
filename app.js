@@ -18,12 +18,16 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(require("./utils/cors"));
+app.use(require("./utils/tokenmiddleware"));
 
+app.use("/admin", require("./routes/api/admin"));
 app.use("/user", require("./routes/api/reglogin"));
 app.use("/auth", require("./routes/api/auth"));
 app.use("/product", require("./routes/api/product"));
 app.use("/feedback", require("./routes/api/feedback"));
 app.use("/cart", require("./routes/api/cart"));
+app.use("/orders", require("./routes/api/order"));
+
 app.use((req, res) => {
   res.send("you have typed something wrong");
 });
