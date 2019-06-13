@@ -1,39 +1,36 @@
 const express = require("express");
 const feedbackRoute = express.Router();
+const feedbackCrud = require("../../db/helpers/feedbackCrud");
 
 //@route Post /feedback/add
 //@desc add products to feedback route
-//@access Public
+//@access Private
 feedbackRoute.post("/add", (req, res) => {
   const json = req.body;
-  const feedbackCrud = require("../../db/helpers/feedbackCrud");
   feedbackCrud.add(json, res);
 });
 
-//@route Post /feedback/search
+//@route Get /feedback/search
 //@desc search products in feedback route
-//@access Public
-feedbackRoute.post("/search", (req, res) => {
-  const json = req.body;
-  const feedbackCrud = require("../../db/helpers/feedbackCrud");
-  feedbackCrud.search(json, res);
+//@access Private
+feedbackRoute.get("/search", (req, res) => {
+  const userid = request.query.userid;
+  feedbackCrud.search(userid, res);
 });
 
 //@route Delete /feedback/delete
 //@desc Delete product from feedback route
-//@access Public
+//@access Private
 feedbackRoute.delete("/delete", (req, res) => {
   const json = req.body;
-  const feedbackCrud = require("../../db/helpers/feedbackCrud");
   feedbackCrud.delete(json, res);
 });
 
 //@route Put /feedback/update
 //@desc Update feedback route
-//@access Public
+//@access Private
 feedbackRoute.put("/update", (req, res) => {
   const json = req.body;
-  const feedbackCrud = require("../../db/helpers/feedbackCrud");
   feedbackCrud.delete(json, res);
 });
 module.exports = feedbackRoute;

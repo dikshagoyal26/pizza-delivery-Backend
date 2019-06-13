@@ -10,12 +10,14 @@ orderRoute.post("/add", (req, res) => {
   orderCrud.add(json, res);
 });
 
-//@route Post /order/search
+//@route Get /order/search
 //@desc search all order in order route
 //@access Public
-orderRoute.post("/search", (req, res) => {
-  const json = req.body;
-  orderCrud.search(json, res);
+orderRoute.get("/search", (req, res) => {
+  // const json = req.body;
+  const userid = request.query.userid;
+
+  orderCrud.search(userid, res);
 });
 
 //@route Put /order/update

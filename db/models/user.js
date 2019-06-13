@@ -26,11 +26,6 @@ var userSchema = new Schema({
   dob: {
     type: Date
   },
-  // email: {
-  //   type: String,
-  //   required: true,
-  //   unique: true
-  // },
   date: {
     type: Date,
     default: Date.now()
@@ -38,39 +33,28 @@ var userSchema = new Schema({
   picture: {
     type: String
   },
-  // address: {
-  //   type: Schema.Types.ObjectId,
-  //   ref: "Addresses"
-  // }
   address: [
     {
       type: {
-        type: String,
-        required: true
+        type: String
       },
       houseNo: {
-        type: String,
-        required: true
+        type: String
       },
       street: {
-        type: String,
-        required: true
+        type: String
       },
       town: {
-        type: String,
-        required: true
+        type: String
       },
       society: {
-        type: String,
-        required: true
+        type: String
       },
       state: {
-        type: String,
-        required: true
+        type: String
       },
       pin: {
-        type: String,
-        required: true
+        type: String
       }
     }
   ]

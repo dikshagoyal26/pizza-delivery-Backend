@@ -1,39 +1,44 @@
 const express = require("express");
 const cartRoute = express.Router();
+const cartCrud = require("../../db/helpers/cartCrud");
 
 //@route Post /cart/add
 //@desc add products to cart route
-//@access Public
+//@access Private
 cartRoute.post("/add", (req, res) => {
   const json = req.body;
-  const cartCrud = require("../../db/helpers/cartCrud");
   cartCrud.add(json, res);
 });
 
-//@route Post /cart/search
+//@route Get /cart/search
 //@desc search products in cart route
-//@access Public
-cartRoute.post("/search", (req, res) => {
-  const json = req.body;
-  const cartCrud = require("../../db/helpers/cartCrud");
-  cartCrud.search(json, res);
+//@access Private
+cartRoute.get("/search", (req, res) => {
+  const userid = request.query.userid;
+  cartCrud.search(userid, res);
 });
 
 //@route Delete /cart/delete
 //@desc Delete product from cart route
-//@access Public
-cartRoute.delete("/delete", (req, res) => {
+//@access Private
+cartRoute.delete("/deleteOne", (req, res) => {
   const json = req.body;
-  const cartCrud = require("../../db/helpers/cartCrud");
   cartCrud.delete(json, res);
+});
+
+//@route Delete /cart/delete
+//@desc Delete product from cart route
+//@access Private
+cartRoute.delete("/deleteAll", (req, res) => {
+  const json = req.body;
+  cartCrud.deleteAll(json, res);
 });
 
 //@route Put /cart/update
 //@desc Update cart route
-//@access Public
+//@access Private
 cartRoute.put("/update", (req, res) => {
   const json = req.body;
-  const cartCrud = require("../../db/helpers/cartCrud");
   cartCrud.delete(json, res);
 });
 module.exports = cartRoute;

@@ -7,9 +7,12 @@ function sendMail(userid, type) {
   } else if (type === "reset") {
     template = require("../template/foregtTemplate")(userid);
     subjectdata = "Reset Password for Pizza Delivery";
-  } else if (type === "feedbackr") {
+  } else if (type === "feedback") {
     template = require("../template/feedbackTemplate")(userid);
-    subjectdata = "Pizza Delivery";
+    subjectdata = "Feedback Recorded for Pizza Delivery";
+  } else if (type === "order") {
+    template = require("../template/orderTemplate")(userid);
+    subjectdata = "Order Confirmed for Pizza Delivery";
   }
   var transporter = nodemailer.createTransport({
     service: "gmail",

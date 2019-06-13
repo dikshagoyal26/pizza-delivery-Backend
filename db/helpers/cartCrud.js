@@ -18,10 +18,10 @@ const cartOperations = {
       }
     });
   },
-  update(cartObject,response){
+  update(cartObject, response) {
     cartModel.findOneAndUpdate(
       { userid: cartObject.userid },
-      { $set:  cartObject },
+      { $set: cartObject },
       { new: true },
       (err, doc) => {
         if (err) {
@@ -64,6 +64,22 @@ const cartOperations = {
       }
     });
   },
+  deleteAll(cartObject, response) {
+    cartModel.deleteMany({ userid: cartObject.userid }, err => {
+      if (err) {
+        response.status(appCodes.RESOURCE_NOT_FOUND).json({
+          status: appCodes.FAIL,
+          message: "Error in record delete "
+        });
+      } else {
+        console.log("Record Deleted");
+        response.status(appCodes.OK).json({
+          status: appCodes.SUCCESS,
+          message: "Record Deleted"
+        });
+      }
+    });
+  },
   search(cartObject, response) {
     cartModel.findOne({ userid: cartObject.userid }, (err, doc) => {
       //match userid
@@ -74,19 +90,12 @@ const cartOperations = {
         });
       } else {
         if (doc) {
-          
-            token = tokenOperations.generateToken({
-              userid: cartObject.userid
-            });
-            response.status(appCodes.OK).json({
-              status: appCodes.SUCCESS,
-              message: "Welcome " + doc.userid,
-              record: doc,
-              token: token
-            });
-            
-            }
-         else {
+          response.status(appCodes.OK).json({
+            status: appCodes.SUCCESS,
+            message: "Welcome " + doc.userid,
+            record: doc
+          });
+        } else {
           response.status(appCodes.RESOURCE_NOT_FOUND).json({
             status: appCodes.FAIL,
             message: "Invalid Userid or Password "

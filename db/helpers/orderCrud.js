@@ -1,6 +1,5 @@
 const orderModel = require("../models/order");
 const appCodes = require("../../utils/appcodes");
-const tokenOperations = require("../../utils/token");
 const sendMail = require("../../utils/mail"); //nodemailer
 
 const orderOperations = {
@@ -14,7 +13,7 @@ const orderOperations = {
         });
       } else {
         console.log("Record Added..");
-        sendMail(userObject.userid, "orderr");
+        sendMail(userObject.userid, "order");
 
         response
           .status(appCodes.OK)
@@ -52,8 +51,8 @@ const orderOperations = {
       }
     );
   },
-  search(orderObject, response) {
-    orderModel.findOne({ userid: orderObject.userid }, (err, doc) => {
+  search(userid, response) {
+    orderModel.find({ userid: userid }, (err, doc) => {
       if (err) {
         response.status(appCodes.SERVER_ERROR).json({
           status: appCodes.ERROR,
@@ -63,7 +62,7 @@ const orderOperations = {
         if (doc) {
           response.status(appCodes.OK).json({
             status: appCodes.SUCCESS,
-            message: "Welcome " + doc.userid,
+            message: "Orders for userid " + userid,
             record: doc
           });
         }

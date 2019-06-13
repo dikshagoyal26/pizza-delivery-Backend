@@ -14,10 +14,11 @@ var FeedbackSchema = new Schema({
   description: {
     type: String,
     max: 250
-  },
-  image: {
-    type: String
   }
+  //,
+  // image: {
+  //   type: String
+  // }
 });
 
 const FeedbackModel = connection.model("users", FeedbackSchema);

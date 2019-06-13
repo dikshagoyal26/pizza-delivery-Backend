@@ -1,6 +1,5 @@
 const feedbackModel = require("../models/feedback");
 const appCodes = require("../../utils/appcodes");
-const tokenOperations = require("../../utils/token");
 const sendMail = require("../../utils/mail"); //nodemailer
 
 const feedbackOperations = {
@@ -14,7 +13,7 @@ const feedbackOperations = {
         });
       } else {
         console.log("Record Added..");
-        sendMail(userObject.userid, "feedbackr");
+        sendMail(userObject.userid, "feedback");
 
         response
           .status(appCodes.OK)
@@ -68,8 +67,8 @@ const feedbackOperations = {
       }
     });
   },
-  search(feedbackObject, response) {
-    feedbackModel.findOne({ userid: feedbackObject.userid }, (err, doc) => {
+  search(userid, response) {
+    feedbackModel.find({ userid: userid }, (err, doc) => {
       //match userid
       if (err) {
         response.status(appCodes.SERVER_ERROR).json({
@@ -78,14 +77,10 @@ const feedbackOperations = {
         });
       } else {
         if (doc) {
-          token = tokenOperations.generateToken({
-            userid: feedbackObject.userid
-          });
           response.status(appCodes.OK).json({
             status: appCodes.SUCCESS,
-            message: "Welcome " + doc.userid,
-            record: doc,
-            token: token
+            message: "Feedback recorded for " + userid,
+            record: doc
           });
         } else {
           response.status(appCodes.RESOURCE_NOT_FOUND).json({

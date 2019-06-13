@@ -5,6 +5,43 @@ const tokenOperations = require("../../utils/token");
 const sendMail = require("../../utils/mail"); //nodemailer
 
 const adminOperations = {
+  login(adminObject, response) {
+    UserModel.findOne({ userid: adminObject.userid }, (err, doc) => {
+      //match userid
+      if (err) {
+        response.status(appCodes.SERVER_ERROR).json({
+          status: appCodes.ERROR,
+          message: "Error in DB During Find Operation"
+        });
+      } else {
+        if (doc) {
+          if (
+            encryptOperations.compareHash(adminObject.password, doc.password) //match pwd
+          ) {
+            token = tokenOperations.generateToken({
+              userid: adminObject.userid
+            });
+            response.status(appCodes.OK).json({
+              status: appCodes.SUCCESS,
+              message: "Welcome " + doc.userid,
+              record: doc,
+              token: token
+            });
+          } else {
+            response.status(appCodes.RESOURCE_NOT_FOUND).json({
+              status: appCodes.FAIL,
+              message: "Invalid Userid or Password "
+            });
+          }
+        } else {
+          response.status(appCodes.RESOURCE_NOT_FOUND).json({
+            status: appCodes.FAIL,
+            message: "Invalid Userid or Password "
+          });
+        }
+      }
+    });
+  },
   add(adminObject, response) {
     adminObject.password = encryptOperations.encryptPassword(
       //password encryption
@@ -95,6 +132,86 @@ const adminOperations = {
           response.status(appCodes.RESOURCE_NOT_FOUND).json({
             status: appCodes.FAIL,
             message: "Invalid adminid or Password "
+          });
+        }
+      }
+    });
+  },
+  orderSearch(response) {
+    const OrderModel = require("../models/orders");
+
+    OrderModel.find({}, (err, doc) => {
+      if (err) {
+        response.status(appCodes.SERVER_ERROR).json({
+          status: appCodes.ERROR,
+          message: "Error in DB During Find Operation"
+        });
+      } else {
+        if (doc) {
+          response.status(appCodes.OK).json({
+            status: appCodes.SUCCESS,
+            message: "Docs Found ",
+            record: doc
+          });
+        } else {
+          response.status(appCodes.RESOURCE_NOT_FOUND).json({
+            status: appCodes.FAIL,
+            message: "Error "
+          });
+        }
+      }
+    });
+  },
+  orderUpdate(orderObject, response) {
+    orderModel.findOneAndUpdate(
+      { userid: orderObject.userid },
+      { $set: orderObject },
+      { new: true },
+      (err, doc) => {
+        if (err) {
+          console.log("Error in Record Update");
+          response.status(appCodes.SERVER_ERROR).json({
+            status: appCodes.ERROR,
+            message: "Record not updated Due to Error"
+          });
+        } else {
+          if (doc) {
+            console.log("Record updated ");
+
+            response.status(appCodes.OK).json({
+              status: appCodes.SUCCESS,
+              userid: doc.userid
+            });
+          } else {
+            response.status(appCodes.RESOURCE_NOT_FOUND).json({
+              status: appCodes.FAIL,
+              message: "Invalid Details "
+            });
+          }
+        }
+      }
+    );
+  },
+  feedbackSearch(response) {
+    const FeedbackModel = require("../models/feedback");
+
+    FeedbackModel.find({}, (err, doc) => {
+      if (err) {
+        response.status(appCodes.SERVER_ERROR).json({
+          status: appCodes.ERROR,
+          message: "Error in DB During Find Operation"
+        });
+      } else {
+        if (doc) {
+          response.status(appCodes.OK).json({
+            status: appCodes.SUCCESS,
+            message: "Docs Found ",
+            record: doc
+          });
+        } else {
+          response.status(appCodes.RESOURCE_NOT_FOUND).json({
+            status: appCodes.FAIL,
+            message: "Error"
           });
         }
       }

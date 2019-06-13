@@ -18,11 +18,17 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(require("./utils/cors"));
-app.use(require("./utils/tokenmiddleware"));
 
 app.use("/admin", require("./routes/api/admin"));
 app.use("/user", require("./routes/api/reglogin"));
 app.use("/auth", require("./routes/api/auth"));
+
+app.use(require("./utils/tokenmiddleware"));
+
+app.use("/admin/admins", require("./routes/api/adminlist"));
+app.use("/admin/order", require("./routes/api/adminOrder"));
+app.use("/admin/feedback", require("./routes/api/adminFeedback"));
+
 app.use("/product", require("./routes/api/product"));
 app.use("/feedback", require("./routes/api/feedback"));
 app.use("/cart", require("./routes/api/cart"));

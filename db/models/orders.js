@@ -1,10 +1,16 @@
 var connection = require("../connection");
 const Schema = connection.Schema;
 var OrderSchema = new Schema({
-  products: {
-    type: [String],
-    required: true
-  },
+  products: [
+    {
+      productid: {
+        type: String
+      },
+      qty: {
+        type: Number
+      }
+    }
+  ],
   userid: {
     type: String, //value will be _id of usermodel
     required: true // ref: 'users'
