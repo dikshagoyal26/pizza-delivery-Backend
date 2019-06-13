@@ -68,5 +68,5 @@ var OrderSchema = new Schema({
   }
 });
 
-const OrderModel = connection.model("users", OrderSchema);
+const OrderModel = connection.model("orders", OrderSchema);
 module.exports = OrderModel;

@@ -5,7 +5,7 @@ const adminCrud = require("../../db/helpers/adminCrud");
 //@route Post admin/login
 //@desc Login admin route
 //@access Public
-authRoute.post("/login", (request, response) => {
+adminRoute.post("/login", (request, response) => {
   const json = request.body;
   adminCrud.login(json, response);
 });

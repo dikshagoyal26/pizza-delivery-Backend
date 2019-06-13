@@ -9,6 +9,7 @@ const tokenOperations = {
     var decoded = jwt.verify(clientTokenNumber, this.SECRETKEY);
     if (decoded) {
       console.log("Verified ", decoded.userid);
+      return decoded;
     } else {
       console.log("Token Not Matched...");
     }

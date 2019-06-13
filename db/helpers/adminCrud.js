@@ -6,7 +6,7 @@ const sendMail = require("../../utils/mail"); //nodemailer
 
 const adminOperations = {
   login(adminObject, response) {
-    UserModel.findOne({ userid: adminObject.userid }, (err, doc) => {
+    AdminModel.findOne({ userid: adminObject.userid }, (err, doc) => {
       //match userid
       if (err) {
         response.status(appCodes.SERVER_ERROR).json({
@@ -65,10 +65,12 @@ const adminOperations = {
     });
   },
   update(adminObject, response) {
-    adminObject.password = encryptOperations.encryptPassword(
-      //password encryption
-      adminObject.password
-    );
+    if (adminObject.password) {
+      adminObject.password = encryptOperations.encryptPassword(
+        //password encryption
+        adminObject.password
+      );
+    }
     AdminModel.findOneAndUpdate(
       { adminid: adminObject.adminid },
       { $set: adminObject },

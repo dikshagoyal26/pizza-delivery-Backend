@@ -41,5 +41,5 @@ var cartSchema = new Schema({
   // }
 });
 
-const cartModel = connection.model("users", cartSchema);
+const cartModel = connection.model("carts", cartSchema);
 module.exports = cartModel;

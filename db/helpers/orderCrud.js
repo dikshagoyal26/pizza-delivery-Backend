@@ -1,4 +1,4 @@
-const orderModel = require("../models/order");
+const orderModel = require("../models/orders");
 const appCodes = require("../../utils/appcodes");
 const sendMail = require("../../utils/mail"); //nodemailer
 

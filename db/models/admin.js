@@ -19,5 +19,5 @@ var AdminSchema = new Schema({
   }
 });
 
-const AdminModel = connection.model("users", AdminSchema);
+const AdminModel = connection.model("admins", AdminSchema);
 module.exports = AdminModel;

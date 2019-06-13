@@ -21,5 +21,5 @@ var FeedbackSchema = new Schema({
   // }
 });
 
-const FeedbackModel = connection.model("users", FeedbackSchema);
+const FeedbackModel = connection.model("feedbacks", FeedbackSchema);
 module.exports = FeedbackModel;
