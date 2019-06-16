@@ -8,4 +8,5 @@ const encryptOperations = {
     return bcrypt.compareSync(password, hashPwd);
   }
 };
+// console.log(encryptOperations.encryptPassword("admin123"));
 module.exports = encryptOperations;

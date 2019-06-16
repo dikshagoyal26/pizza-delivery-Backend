@@ -1,6 +1,5 @@
 const cartModel = require("../models/cart");
 const appCodes = require("../../utils/appcodes");
-const tokenOperations = require("../../utils/token");
 const cartOperations = {
   add(cartObject, response) {
     cartModel.create(cartObject, err => {
@@ -81,7 +80,7 @@ const cartOperations = {
     });
   },
   search(cartObject, response) {
-    cartModel.findOne({ userid: cartObject.userid }, (err, doc) => {
+    cartModel.find({ userid: cartObject.userid }, (err, doc) => {
       //match userid
       if (err) {
         response.status(appCodes.SERVER_ERROR).json({

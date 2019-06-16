@@ -3,7 +3,8 @@ const Schema = connection.Schema;
 var AdminSchema = new Schema({
   adminid: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   name: {
     type: String,
@@ -11,7 +12,7 @@ var AdminSchema = new Schema({
   },
   password: {
     type: String,
-    default: "admin123"
+    default: "$2b$10$LK4Pszkjusj7a6CebW5NquirrVu6MdyiVtZMkZf7gidreQMEr5R5y" //admin123
   },
   isFirstTym: {
     type: Boolean,

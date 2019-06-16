@@ -15,8 +15,7 @@ orderRoute.post("/add", (req, res) => {
 //@access Public
 orderRoute.get("/search", (req, res) => {
   // const json = req.body;
-  const userid = request.query.userid;
-
+  const userid = req.query.userid;
   orderCrud.search(userid, res);
 });
 

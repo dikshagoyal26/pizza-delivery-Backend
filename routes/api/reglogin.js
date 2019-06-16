@@ -10,10 +10,10 @@ const validateLoginInput = require("../../validation/login");
 //@access Public
 authRoute.post("/register", (request, response) => {
   // console.log("request is", request.body);
-  const { errors, isValid } = validateRegisterInput(req.body);
-  if (!isValid) {
-    return res.status(400).json(errors);
-  }
+  // const { errors, isValid } = validateRegisterInput(request.body);
+  // if (!isValid) {
+  //   return response.status(400).json(errors);
+  // }
   var json = request.body;
   userCrud.add(json, response);
 });
@@ -22,10 +22,10 @@ authRoute.post("/register", (request, response) => {
 //@desc Login users route
 //@access Public
 authRoute.post("/login", (request, response) => {
-  const { errors, isValid } = validateLoginInput(req.body);
-  if (!isValid) {
-    return res.status(404).json(errors);
-  }
+  // const { errors, isValid } = validateLoginInput(request.body);
+  // if (!isValid) {
+  //   return response.status(404).json(errors);
+  // }
   const json = request.body;
   userCrud.search(json, response);
 });
@@ -57,7 +57,7 @@ authRoute.delete("/deleteone", (req, res) => {
 //@route Put /update
 //@desc update user account users route
 //@access Public
-authRoute.put("/update", (req, response) => {
+authRoute.put("/update", (req, res) => {
   let data = req.body;
   userOperations.update(data, res);
 });

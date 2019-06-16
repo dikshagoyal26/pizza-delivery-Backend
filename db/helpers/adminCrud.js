@@ -6,8 +6,8 @@ const sendMail = require("../../utils/mail"); //nodemailer
 
 const adminOperations = {
   login(adminObject, response) {
-    AdminModel.findOne({ userid: adminObject.userid }, (err, doc) => {
-      //match userid
+    AdminModel.findOne({ adminid: adminObject.adminid }, (err, doc) => {
+      //match adminid
       if (err) {
         response.status(appCodes.SERVER_ERROR).json({
           status: appCodes.ERROR,
@@ -19,34 +19,36 @@ const adminOperations = {
             encryptOperations.compareHash(adminObject.password, doc.password) //match pwd
           ) {
             token = tokenOperations.generateToken({
-              userid: adminObject.userid
+              adminid: adminObject.adminid
             });
             response.status(appCodes.OK).json({
               status: appCodes.SUCCESS,
-              message: "Welcome " + doc.userid,
+              message: "Welcome " + doc.adminid,
               record: doc,
               token: token
             });
           } else {
             response.status(appCodes.RESOURCE_NOT_FOUND).json({
               status: appCodes.FAIL,
-              message: "Invalid Userid or Password "
+              message: "Invalid adminid or Password "
             });
           }
         } else {
           response.status(appCodes.RESOURCE_NOT_FOUND).json({
             status: appCodes.FAIL,
-            message: "Invalid Userid or Password "
+            message: "Invalid adminid or Password "
           });
         }
       }
     });
   },
   add(adminObject, response) {
-    adminObject.password = encryptOperations.encryptPassword(
-      //password encryption
-      adminObject.password
-    );
+    if (adminObject.password) {
+      adminObject.password = encryptOperations.encryptPassword(
+        //password encryption
+        adminObject.password
+      );
+    }
     AdminModel.create(adminObject, err => {
       if (err) {
         console.log("Error in Record Add");
@@ -101,7 +103,7 @@ const adminOperations = {
     );
   },
   delete(adminObject, response) {
-    AdminModel.findOneAndRemove({ adminid: adminObject.adminid }, err => {
+    AdminModel.findByIdAndRemove(adminObject.adminid, err => {
       if (err) {
         response.status(appCodes.RESOURCE_NOT_FOUND).json({
           status: appCodes.FAIL,
@@ -165,7 +167,9 @@ const adminOperations = {
     });
   },
   orderUpdate(orderObject, response) {
-    orderModel.findOneAndUpdate(
+    const OrderModel = require("../models/orders");
+
+    OrderModel.findOneAndUpdate(
       { userid: orderObject.userid },
       { $set: orderObject },
       { new: true },
