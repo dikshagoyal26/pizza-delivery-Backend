@@ -93,7 +93,7 @@ const productOperations = {
       });
   },
   //Delete the product
-  delete(prodObject, res) {
+  delete(prodObject, response) {
     ProductModel.findOneAndRemove({ productid: prodObject.productid }, err => {
       if (err) {
         response.status(appCodes.RESOURCE_NOT_FOUND).json({

@@ -14,8 +14,9 @@ cartRoute.post("/add", (req, res) => {
 //@desc search products in cart route
 //@access Private
 cartRoute.get("/search", (req, res) => {
-  const userid = request.query.userid;
-  cartCrud.search(userid, res);
+  // const userid = req.query.userid;
+  let json = { userid: req.query.userid };
+  cartCrud.search(json, res);
 });
 
 //@route Delete /cart/delete
@@ -34,11 +35,11 @@ cartRoute.delete("/deleteAll", (req, res) => {
   cartCrud.deleteAll(json, res);
 });
 
-//@route Put /cart/update
-//@desc Update cart route
-//@access Private
-cartRoute.put("/update", (req, res) => {
-  const json = req.body;
-  cartCrud.delete(json, res);
-});
+// //@route Put /cart/update
+// //@desc Update cart route
+// //@access Private
+// cartRoute.put("/update", (req, res) => {
+//   const json = req.body;
+//   cartCrud.update(json, res);
+// });
 module.exports = cartRoute;

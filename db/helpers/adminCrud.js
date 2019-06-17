@@ -67,15 +67,31 @@ const adminOperations = {
     });
   },
   update(adminObject, response) {
+    var adminid;
     if (adminObject.password) {
       adminObject.password = encryptOperations.encryptPassword(
         //password encryption
         adminObject.password
       );
+    } else {
+      adminObject.password =
+        "$2b$10$LK4Pszkjusj7a6CebW5NquirrVu6MdyiVtZMkZf7gidreQMEr5R5y";
+    }
+    if (adminObject.newadminid) {
+      adminid = adminObject.newadminid;
+    } else {
+      adminid = adminObject.adminid;
     }
     AdminModel.findOneAndUpdate(
       { adminid: adminObject.adminid },
-      { $set: adminObject },
+      {
+        $set: {
+          adminid: adminid,
+          name: adminObject.name,
+          password: adminObject.password,
+          isFirstTym: false
+        }
+      },
       { new: true },
       (err, doc) => {
         if (err) {
@@ -103,18 +119,33 @@ const adminOperations = {
     );
   },
   delete(adminObject, response) {
-    AdminModel.findByIdAndRemove(adminObject.adminid, err => {
+    AdminModel.findOne({ adminid: adminObject.adminid }, (err, doc) => {
       if (err) {
-        response.status(appCodes.RESOURCE_NOT_FOUND).json({
-          status: appCodes.FAIL,
-          message: "Error in record delete "
+        response.status(appCodes.SERVER_ERROR).json({
+          status: appCodes.ERROR,
+          message: "Error in DB During Find Operation"
         });
       } else {
-        console.log("Record Deleted");
-        response.status(appCodes.OK).json({
-          status: appCodes.SUCCESS,
-          message: "Record Deleted"
-        });
+        if (doc) {
+          AdminModel.remove({ adminid: adminObject.adminid }, err => {
+            if (err) {
+              response.status(appCodes.SERVER_ERROR).json({
+                status: appCodes.ERROR,
+                message: "Error in DB During Delete Operation"
+              });
+            } else {
+              response.status(appCodes.OK).json({
+                status: appCodes.SUCCESS,
+                message: "Record Deleted "
+              });
+            }
+          });
+        } else {
+          response.status(appCodes.RESOURCE_NOT_FOUND).json({
+            status: appCodes.FAIL,
+            message: "Invalid adminid or Password "
+          });
+        }
       }
     });
   },
@@ -135,7 +166,7 @@ const adminOperations = {
         } else {
           response.status(appCodes.RESOURCE_NOT_FOUND).json({
             status: appCodes.FAIL,
-            message: "Invalid adminid or Password "
+            message: "No record Found "
           });
         }
       }
@@ -217,7 +248,7 @@ const adminOperations = {
         } else {
           response.status(appCodes.RESOURCE_NOT_FOUND).json({
             status: appCodes.FAIL,
-            message: "Error"
+            message: "No feedback found"
           });
         }
       }

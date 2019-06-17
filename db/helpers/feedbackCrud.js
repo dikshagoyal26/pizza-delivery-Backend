@@ -6,14 +6,14 @@ const feedbackOperations = {
   add(feedbackObject, response) {
     feedbackModel.create(feedbackObject, err => {
       if (err) {
-        console.log("Error in Record Add");
+        console.log("Error in Record Add", err);
         response.status(appCodes.SERVER_ERROR).json({
           status: appCodes.ERROR,
           message: "Record Not Added Due to Error"
         });
       } else {
         console.log("Record Added..");
-        sendMail(userObject.userid, "feedback");
+        sendMail(feedbackObject.userid, "feedback");
 
         response
           .status(appCodes.OK)
@@ -23,7 +23,7 @@ const feedbackOperations = {
   },
   update(feedbackObject, response) {
     feedbackModel.findOneAndUpdate(
-      { userid: feedbackObject.userid },
+      { _id: feedbackObject._id },
       { $set: feedbackObject },
       { new: true },
       (err, doc) => {
@@ -52,7 +52,7 @@ const feedbackOperations = {
     );
   },
   delete(feedbackObject, response) {
-    feedbackModel.findOneAndRemove({ userid: feedbackObject.userid }, err => {
+    feedbackModel.findOneAndRemove({ _id: feedbackObject._id }, err => {
       if (err) {
         response.status(appCodes.RESOURCE_NOT_FOUND).json({
           status: appCodes.FAIL,
@@ -67,8 +67,8 @@ const feedbackOperations = {
       }
     });
   },
-  search(userid, response) {
-    feedbackModel.find({ userid: userid }, (err, doc) => {
+  search(feedbackObject, response) {
+    feedbackModel.find({ userid: feedbackObject.userid }, (err, doc) => {
       //match userid
       if (err) {
         response.status(appCodes.SERVER_ERROR).json({

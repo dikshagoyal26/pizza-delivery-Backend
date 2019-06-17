@@ -8,6 +8,10 @@ var FeedbackSchema = new Schema({
   description: {
     type: String,
     max: 250
+  },
+  date: {
+    type: Date,
+    default: Date.now()
   }
   //,
   // image: {

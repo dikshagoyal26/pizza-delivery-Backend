@@ -23,7 +23,7 @@ app.use("/admin", require("./routes/api/admin"));
 app.use("/user", require("./routes/api/reglogin"));
 app.use("/auth", require("./routes/api/auth"));
 
-app.use(require("./utils/tokenmiddleware"));
+// app.use(require("./utils/tokenmiddleware"));
 
 app.use("/admin/admins", require("./routes/api/adminlist"));
 app.use("/admin/order", require("./routes/api/adminOrder"));

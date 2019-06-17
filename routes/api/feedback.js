@@ -14,8 +14,8 @@ feedbackRoute.post("/add", (req, res) => {
 //@desc search products in feedback route
 //@access Private
 feedbackRoute.get("/search", (req, res) => {
-  const userid = request.query.userid;
-  feedbackCrud.search(userid, res);
+  let json = { userid: req.query.userid };
+  feedbackCrud.search(json, res);
 });
 
 //@route Delete /feedback/delete

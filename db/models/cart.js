@@ -1,38 +1,36 @@
 var connection = require("../connection");
 const Schema = connection.Schema;
 var cartSchema = new Schema({
-  productid: {
-    type: String, //value will be _id of productmodel
-    required: true,
-    unique: true
-    // type: Schema.Types.ObjectId,
-    // ref: 'users'
-  },
   userid: {
-    type: String, //value will be _id of usermodel
-    required: true,
-    unique: true
+    type: String //value will be _id of usermodel
   },
   name: {
-    type: String,
-    required: true,
-    unique: true
+    type: String
   },
-  price: {
-    type: String,
-    required: true,
-    unique: true
-  },
-  toppings: {
-    type: String,
-    required: true
-    //unique: true
-  },
-  qty: {
-    type: String,
-    required: true,
-    unique: true
-  }
+  products: [
+    {
+      type: Object,
+      productid: {
+        type: String
+      },
+      name: {
+        type: String
+      },
+      price: {
+        type: Number
+      },
+      toppings: {
+        type: String
+      },
+      qty: {
+        type: Number
+      },
+      total: {
+        type: Number
+      }
+    }
+  ] //Products ka array
+
   // },
   // total:{
   //     type: String,
