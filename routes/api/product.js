@@ -42,7 +42,7 @@ productRoute.post(
 //@route DELETE /product/delete
 //@desc delete product
 //@access Private
-productRoute.delete(
+productRoute.post(
   "/delete",
   // passport.authenticate("jwt", { session: false}),
   (req, res) => {

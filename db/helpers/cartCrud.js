@@ -44,7 +44,9 @@ const cartOperations = {
         data.products[i].price = cartObject.products[0].price;
         data.products[i].toppings = cartObject.products[0].toppings;
         data.products[i].qty = cartObject.products[0].qty;
-        data.products[i].total = cartObject.products[0].total;
+        data.products[i].total =
+          parseInt(cartObject.products[0].qty) *
+          parseInt(cartObject.products[0].price);
         // cartModel.updateOne();
         objFound_bool = true;
       }
@@ -83,24 +85,64 @@ const cartOperations = {
       }
     );
   },
-  delete(cartObject, response) {
-    cartModel.findOneAndRemove({ userid: cartObject.userid }, err => {
+  deleteone(cartObject, response) {
+    cartModel.findOne({ userid: cartObject.userid }, (err, doc) => {
       if (err) {
-        response.status(appCodes.RESOURCE_NOT_FOUND).json({
-          status: appCodes.FAIL,
-          message: "Error in record delete "
+        console.log("Error", err);
+
+        response.status(appCodes.SERVER_ERROR).json({
+          status: appCodes.ERROR,
+          message: "Error in DB During Find Operation"
         });
       } else {
-        console.log("Record Deleted");
-        response.status(appCodes.OK).json({
-          status: appCodes.SUCCESS,
-          message: "Record Deleted"
-        });
+        if (data) {
+          for (let i = 0; i < data.products.length; i++) {
+            if (
+              data.products[i].productid == cartObject.products[0].productid
+            ) {
+              items.splice(i, 1);
+              break;
+            }
+          }
+          cartModel.findOneAndUpdate(
+            { userid: cartObject.userid },
+            { $set: data },
+            { upsert: true },
+            (err, doc) => {
+              if (err) {
+                console.log("Error in Record Update", err);
+                response.status(appCodes.SERVER_ERROR).json({
+                  status: appCodes.ERROR,
+                  message: "Record not updated Due to Error"
+                });
+              } else {
+                if (doc) {
+                  console.log("Record Deleted ");
+
+                  response.status(appCodes.OK).json({
+                    status: appCodes.SUCCESS,
+                    userid: doc.userid
+                  });
+                } else {
+                  response.status(appCodes.RESOURCE_NOT_FOUND).json({
+                    status: appCodes.FAIL,
+                    message: "Invalid Details "
+                  });
+                }
+              }
+            }
+          );
+        } else {
+          response.status(appCodes.RESOURCE_NOT_FOUND).json({
+            status: appCodes.FAIL,
+            message: "Invalid Details "
+          });
+        }
       }
     });
   },
   deleteAll(cartObject, response) {
-    cartModel.deleteMany({ userid: cartObject.userid }, err => {
+    cartModel.findOneAndRemove({ userid: cartObject.userid }, err => {
       if (err) {
         response.status(appCodes.RESOURCE_NOT_FOUND).json({
           status: appCodes.FAIL,

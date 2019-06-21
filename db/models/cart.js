@@ -23,7 +23,8 @@ var cartSchema = new Schema({
         type: String
       },
       qty: {
-        type: Number
+        type: Number,
+        default: "0"
       },
       total: {
         type: Number

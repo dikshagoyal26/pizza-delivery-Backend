@@ -66,17 +66,47 @@ const adminOperations = {
       }
     });
   },
+  updatepwd(adminObject, response) {
+    adminObject.password = encryptOperations.encryptPassword(
+      //password encryption
+      adminObject.password
+    );
+
+    AdminModel.findOneAndUpdate(
+      { adminid: adminObject.adminid },
+      {
+        $set: {
+          password: adminObject.password,
+          isFirstTym: false
+        }
+      },
+      { new: true },
+      (err, doc) => {
+        if (err) {
+          console.log("Error in Record Update");
+          response.status(appCodes.SERVER_ERROR).json({
+            status: appCodes.ERROR,
+            message: "Record not updated Due to Error"
+          });
+        } else {
+          if (doc) {
+            console.log("Record updated ");
+
+            response.status(appCodes.OK).json({
+              status: appCodes.SUCCESS,
+              adminid: doc.adminid
+            });
+          } else {
+            response.status(appCodes.RESOURCE_NOT_FOUND).json({
+              status: appCodes.FAIL,
+              message: "Invalid Details "
+            });
+          }
+        }
+      }
+    );
+  },
   update(adminObject, response) {
-    var adminid;
-    if (adminObject.password) {
-      adminObject.password = encryptOperations.encryptPassword(
-        //password encryption
-        adminObject.password
-      );
-    } else {
-      adminObject.password =
-        "$2b$10$LK4Pszkjusj7a6CebW5NquirrVu6MdyiVtZMkZf7gidreQMEr5R5y";
-    }
     if (adminObject.newadminid) {
       adminid = adminObject.newadminid;
     } else {
@@ -88,8 +118,7 @@ const adminOperations = {
         $set: {
           adminid: adminid,
           name: adminObject.name,
-          password: adminObject.password,
-          isFirstTym: false
+          isFirstTym: true
         }
       },
       { new: true },

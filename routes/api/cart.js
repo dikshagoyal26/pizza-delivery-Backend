@@ -24,7 +24,7 @@ cartRoute.get("/search", (req, res) => {
 //@access Private
 cartRoute.delete("/deleteOne", (req, res) => {
   const json = req.body;
-  cartCrud.delete(json, res);
+  cartCrud.deleteone(json, res);
 });
 
 //@route Delete /cart/delete

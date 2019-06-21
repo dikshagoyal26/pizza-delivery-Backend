@@ -79,7 +79,7 @@ const feedbackOperations = {
         if (doc) {
           response.status(appCodes.OK).json({
             status: appCodes.SUCCESS,
-            message: "Feedback recorded for " + userid,
+            message: "Feedback recorded for " + doc.userid,
             record: doc
           });
         } else {

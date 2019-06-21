@@ -30,7 +30,11 @@ adminRoute.delete("/delete", (req, res) => {
 //@access Private
 adminRoute.put("/update", (req, res) => {
   const json = req.body;
-  adminCrud.update(json, res);
+  if (json.password) {
+    adminCrud.updatepwd(json, res);
+  } else {
+    adminCrud.update(json, res);
+  }
 });
 
 module.exports = adminRoute;
