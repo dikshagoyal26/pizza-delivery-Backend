@@ -1,6 +1,10 @@
 var connection = require("../connection");
 const Schema = connection.Schema;
 var FeedbackSchema = new Schema({
+  feedbackid: {
+    type: String,
+    required: true
+  },
   userid: {
     type: String, //value will be _id of usermodel
     required: true // ref: 'users'

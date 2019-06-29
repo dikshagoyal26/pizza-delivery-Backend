@@ -1,10 +1,11 @@
 const orderModel = require("../models/orders");
 const appCodes = require("../../utils/appcodes");
 const sendMail = require("../../utils/mail"); //nodemailer
-
+const uuid = require("uuid");
 const orderOperations = {
   add(orderObject, response) {
-    orderModel.create(orderObject, err => {
+    orderObject.orderid = uuid("order", orderObject.userid);
+    orderModel.create(orderObject, (err) => {
       if (err) {
         console.log("Error in Record Add");
         response.status(appCodes.SERVER_ERROR).json({
@@ -15,20 +16,22 @@ const orderOperations = {
         console.log("Record Added..");
         sendMail(userObject.userid, "order");
 
-        response
-          .status(appCodes.OK)
-          .json({ status: appCodes.SUCCESS, message: "Record Added" });
+        response.status(appCodes.OK).json({
+          status: appCodes.SUCCESS,
+          message: "Record Added",
+          orderid: orderObject.orderid
+        });
       }
     });
   },
   update(orderObject, response) {
     orderModel.findOneAndUpdate(
-      { userid: orderObject.userid },
+      { orderid: orderObject.orderid },
       { $set: orderObject },
       { new: true },
       (err, doc) => {
         if (err) {
-          console.log("Error in Record Update");
+          console.log("Error in Record Update", err);
           response.status(appCodes.SERVER_ERROR).json({
             status: appCodes.ERROR,
             message: "Record not updated Due to Error"

@@ -1,6 +1,10 @@
 var connection = require("../connection");
 const Schema = connection.Schema;
 var OrderSchema = new Schema({
+  orderid: {
+    type: String,
+    required: true
+  },
   products: [
     {
       productid: {

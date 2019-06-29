@@ -1,10 +1,12 @@
 const feedbackModel = require("../models/feedback");
 const appCodes = require("../../utils/appcodes");
 const sendMail = require("../../utils/mail"); //nodemailer
+const uuid = require("uuid");
 
 const feedbackOperations = {
   add(feedbackObject, response) {
-    feedbackModel.create(feedbackObject, err => {
+    feedbackObject.feedbackid = uuid("feedback", feedbackObject.userid);
+    feedbackModel.create(feedbackObject, (err) => {
       if (err) {
         console.log("Error in Record Add", err);
         response.status(appCodes.SERVER_ERROR).json({
@@ -17,13 +19,17 @@ const feedbackOperations = {
 
         response
           .status(appCodes.OK)
-          .json({ status: appCodes.SUCCESS, message: "Record Added" });
+          .json({
+            status: appCodes.SUCCESS,
+            message: "Record Added",
+            feedbackid: feedbackObject.feedbackid
+          });
       }
     });
   },
   update(feedbackObject, response) {
     feedbackModel.findOneAndUpdate(
-      { _id: feedbackObject._id },
+      { feedbackid: feedbackObject.feedbackid },
       { $set: feedbackObject },
       { new: true },
       (err, doc) => {
@@ -52,20 +58,23 @@ const feedbackOperations = {
     );
   },
   delete(feedbackObject, response) {
-    feedbackModel.findOneAndRemove({ _id: feedbackObject._id }, err => {
-      if (err) {
-        response.status(appCodes.RESOURCE_NOT_FOUND).json({
-          status: appCodes.FAIL,
-          message: "Error in record delete "
-        });
-      } else {
-        console.log("Record Deleted");
-        response.status(appCodes.OK).json({
-          status: appCodes.SUCCESS,
-          message: "Record Deleted"
-        });
+    feedbackModel.findOneAndRemove(
+      { feedbackid: feedbackObject.feedbackid },
+      (err) => {
+        if (err) {
+          response.status(appCodes.RESOURCE_NOT_FOUND).json({
+            status: appCodes.FAIL,
+            message: "Error in record delete "
+          });
+        } else {
+          console.log("Record Deleted");
+          response.status(appCodes.OK).json({
+            status: appCodes.SUCCESS,
+            message: "Record Deleted"
+          });
+        }
       }
-    });
+    );
   },
   search(feedbackObject, response) {
     feedbackModel.find({ userid: feedbackObject.userid }, (err, doc) => {

@@ -14,7 +14,7 @@ const cartOperations = {
         if (doc) {
           this.update(cartObject, doc, response);
         } else {
-          cartModel.create(cartObject, err => {
+          cartModel.create(cartObject, (err) => {
             if (err) {
               console.log("Error in Record Add", err);
               response.status(appCodes.SERVER_ERROR).json({
@@ -86,7 +86,7 @@ const cartOperations = {
     );
   },
   deleteone(cartObject, response) {
-    cartModel.findOne({ userid: cartObject.userid }, (err, doc) => {
+    cartModel.findOne({ userid: cartObject.userid }, (err, data) => {
       if (err) {
         console.log("Error", err);
 
@@ -100,7 +100,7 @@ const cartOperations = {
             if (
               data.products[i].productid == cartObject.products[0].productid
             ) {
-              items.splice(i, 1);
+              data.products[i].splice(i, 1);
               break;
             }
           }
@@ -142,7 +142,7 @@ const cartOperations = {
     });
   },
   deleteAll(cartObject, response) {
-    cartModel.findOneAndRemove({ userid: cartObject.userid }, err => {
+    cartModel.findOneAndRemove({ userid: cartObject.userid }, (err) => {
       if (err) {
         response.status(appCodes.RESOURCE_NOT_FOUND).json({
           status: appCodes.FAIL,

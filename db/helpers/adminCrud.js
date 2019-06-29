@@ -49,7 +49,7 @@ const adminOperations = {
         adminObject.password
       );
     }
-    AdminModel.create(adminObject, err => {
+    AdminModel.create(adminObject, (err) => {
       if (err) {
         console.log("Error in Record Add");
         response.status(appCodes.SERVER_ERROR).json({
@@ -156,7 +156,7 @@ const adminOperations = {
         });
       } else {
         if (doc) {
-          AdminModel.remove({ adminid: adminObject.adminid }, err => {
+          AdminModel.remove({ adminid: adminObject.adminid }, (err) => {
             if (err) {
               response.status(appCodes.SERVER_ERROR).json({
                 status: appCodes.ERROR,
@@ -172,7 +172,7 @@ const adminOperations = {
         } else {
           response.status(appCodes.RESOURCE_NOT_FOUND).json({
             status: appCodes.FAIL,
-            message: "Invalid adminid or Password "
+            message: "Invalid adminid  "
           });
         }
       }
@@ -230,7 +230,7 @@ const adminOperations = {
     const OrderModel = require("../models/orders");
 
     OrderModel.findOneAndUpdate(
-      { userid: orderObject.userid },
+      { orderid: orderObject.orderid },
       { $set: orderObject },
       { new: true },
       (err, doc) => {

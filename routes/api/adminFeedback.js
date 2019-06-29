@@ -2,10 +2,10 @@ const express = require("express");
 const adminRoute = express.Router();
 const adminCrud = require("../../db/helpers/adminCrud");
 
-//@route Put /admin/feedback/search
+//@route Get /admin/feedback/search
 //@desc Display all feedbacks to admin route
 //@access Private
-adminRoute.put("/feedback/search", (req, res) => {
+adminRoute.get("/search", (req, res) => {
   adminCrud.feedbackSearch(res);
 });
 

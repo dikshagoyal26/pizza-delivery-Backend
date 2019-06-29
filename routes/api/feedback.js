@@ -31,6 +31,6 @@ feedbackRoute.delete("/delete", (req, res) => {
 //@access Private
 feedbackRoute.put("/update", (req, res) => {
   const json = req.body;
-  feedbackCrud.delete(json, res);
+  feedbackCrud.update(json, res);
 });
 module.exports = feedbackRoute;

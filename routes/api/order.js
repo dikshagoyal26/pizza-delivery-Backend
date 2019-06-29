@@ -24,6 +24,6 @@ orderRoute.get("/search", (req, res) => {
 //@access Public
 orderRoute.put("/update", (req, res) => {
   const json = req.body;
-  orderCrud.delete(json, res);
+  orderCrud.update(json, res);
 });
 module.exports = orderRoute;
