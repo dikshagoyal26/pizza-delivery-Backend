@@ -7,12 +7,13 @@ passport.serializeUser((user, done) => {
   // this is call when u write data in cookie
   var error = null;
   done(error, user);
+  console.log("user is", user);
 });
 
 passport.deserializeUser((userid, done) => {
   // this is call when u read data from cookie
   console.log("User session ", userid);
-  User.findById(userid).then(user => {
+  User.findById(userid).then((user) => {
     done(null, user);
   });
 });
@@ -20,7 +21,7 @@ passport.deserializeUser((userid, done) => {
 passport.use(
   new GoogleStrategy(
     {
-      callbackURL: "/auth/dashboard",
+      callbackURL: "http://localhost:3000/",
       clientID: googleAuth.clientID,
       clientSecret: googleAuth.clientSecret
     },
@@ -36,18 +37,18 @@ passport.use(
         done
       );
 
-      User.findOne({ googleId: profile.id }).then(currentUser => {
+      User.findOne({ googleID: profile.id }).then((currentUser) => {
         if (currentUser) {
           console.log("user exist");
           done(null, currentUser); //call serialize
         } else {
           var userObject = new User({
-            googleId: profile.id,
-            username: profile._json.name,
+            googleID: profile.id,
+            firstname: profile._json.name,
             picture: profile._json.picture,
-            email: profile._json.email
+            userid: profile._json.email
           });
-          userObject.save().then(newUser => {
+          userObject.save().then((newUser) => {
             console.log("New User Added...");
 
             done(null, newUser);

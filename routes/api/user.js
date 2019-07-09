@@ -5,7 +5,7 @@ const userCrud = require("../../db/helpers/userCrud");
 const validateRegisterInput = require("../../validation/register");
 const validateLoginInput = require("../../validation/login");
 
-//@route Post /register
+//@route Post /user/register
 //@desc Register users route
 //@access Public
 authRoute.post("/register", (request, response) => {
@@ -18,7 +18,7 @@ authRoute.post("/register", (request, response) => {
   userCrud.add(json, response);
 });
 
-//@route Post /login
+//@route Post /user/login
 //@desc Login users route
 //@access Public
 authRoute.post("/login", (request, response) => {
@@ -27,39 +27,47 @@ authRoute.post("/login", (request, response) => {
   //   return response.status(404).json(errors);
   // }
   const json = request.body;
-  userCrud.search(json, response);
+  userCrud.login(json, response);
 });
 
-//@route Post /findbyid
+//@route Post /user/findbyid
 //@desc forget password find email id users route
 //@access Public
 authRoute.post("/findbyid", (request, response) => {
   const json = request.body;
-  userCrud.findbyid(json, response);
+  userCrud.findid(json, response);
 });
 
-//@route Put /resetpwd
+//@route Put /user/resetpwd
 //@desc forget password reset password users route
 //@access Public
 authRoute.put("/resetpwd", (req, res) => {
   let data = req.body;
-  userOperations.resetpwd(data, res);
+  userCrud.resetpwd(data, res);
 });
 
-//@route Post /deleteone
+//@route Put /user/changepwd
+//@desc change password users route
+//@access Private
+authRoute.put("/changepwd", (req, res) => {
+  let data = req.body;
+  userCrud.changepwd(data, res);
+});
+
+//@route Post /user/deleteone
 //@desc delete user account users route
-//@access Public
+//@access Private
 authRoute.delete("/deleteone", (req, res) => {
   let data = req.body;
-  userOperations.delteone(data, res);
+  userCrud.delteone(data, res);
 });
 
-//@route Put /update
+//@route Put /user/update
 //@desc update user account users route
-//@access Public
+//@access Private
 authRoute.put("/update", (req, res) => {
   let data = req.body;
-  userOperations.update(data, res);
+  userCrud.update(data, res);
 });
 
 module.exports = authRoute;

@@ -4,18 +4,18 @@ var userSchema = new Schema({
   userid: {
     //Email
     //or googleID in case of auth register
-    type: String,
-    required: true,
-    unique: true
+    type: String
+    // required: true,
+    //unique: true
   },
   password: {
-    type: String,
-    required: true
+    type: String
+    // required: true
     // default: "ABCD"
   },
   firstname: {
-    type: String,
-    required: true
+    type: String
+    // required: true
   },
   lastname: {
     type: String
@@ -31,6 +31,9 @@ var userSchema = new Schema({
     default: Date.now()
   },
   picture: {
+    type: String
+  },
+  googleID: {
     type: String
   },
   address: [

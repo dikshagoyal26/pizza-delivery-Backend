@@ -10,4 +10,11 @@ adminRoute.post("/login", (request, response) => {
   adminCrud.login(json, response);
 });
 
+//@route Put /admin/changepwd
+//@desc change password admin route
+//@access Private
+adminRoute.put("/changepwd", (request, response) => {
+  let json = request.body;
+  adminCrud.changepwd(json, response);
+});
 module.exports = adminRoute;

@@ -17,13 +17,11 @@ const feedbackOperations = {
         console.log("Record Added..");
         sendMail(feedbackObject.userid, "feedback");
 
-        response
-          .status(appCodes.OK)
-          .json({
-            status: appCodes.SUCCESS,
-            message: "Record Added",
-            feedbackid: feedbackObject.feedbackid
-          });
+        response.status(appCodes.OK).json({
+          status: appCodes.SUCCESS,
+          message: "Record Added",
+          feedbackid: feedbackObject.feedbackid
+        });
       }
     });
   },
@@ -88,7 +86,7 @@ const feedbackOperations = {
         if (doc) {
           response.status(appCodes.OK).json({
             status: appCodes.SUCCESS,
-            message: "Feedback recorded for " + doc.userid,
+            message: "Feedback recorded for " + feedbackObject.userid,
             record: doc
           });
         } else {

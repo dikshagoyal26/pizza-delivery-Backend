@@ -24,7 +24,11 @@ const adminOperations = {
             response.status(appCodes.OK).json({
               status: appCodes.SUCCESS,
               message: "Welcome " + doc.adminid,
-              record: doc,
+              record: {
+                name: doc.name,
+                isFirstTym: doc.isFirstTym,
+                adminid: doc.adminid
+              },
               token: token
             });
           } else {
@@ -37,6 +41,67 @@ const adminOperations = {
           response.status(appCodes.RESOURCE_NOT_FOUND).json({
             status: appCodes.FAIL,
             message: "Invalid adminid or Password "
+          });
+        }
+      }
+    });
+  },
+  changepwd(adminObject, response) {
+    AdminModel.findOne({ adminid: adminObject.adminid }, (err, doc) => {
+      if (err) {
+        console.log("Error in Email Search");
+        response.status(appCodes.SERVER_ERROR).json({
+          status: appCodes.ERROR,
+          message: "Email Not Searched Due to Error"
+        });
+      } else {
+        if (doc) {
+          console.log("Email found");
+
+          if (
+            encryptOperations.compareHash(adminObject.oldpassword, doc.password)
+          ) {
+            adminObject.password = encryptOperations.encryptPassword(
+              adminObject.password
+            );
+            AdminModel.findOneAndUpdate(
+              { adminid: adminObject.adminid },
+              { $set: adminObject },
+              { upsert: true },
+              (err, doc) => {
+                if (err) {
+                  console.log("Error in Record Update", err);
+                  response.status(appCodes.SERVER_ERROR).json({
+                    status: appCodes.ERROR,
+                    message: "Record not updated Due to Error"
+                  });
+                } else {
+                  if (doc) {
+                    console.log("Record Deleted ");
+
+                    response.status(appCodes.OK).json({
+                      status: appCodes.SUCCESS,
+                      adminid: doc.adminid
+                    });
+                  } else {
+                    response.status(appCodes.RESOURCE_NOT_FOUND).json({
+                      status: appCodes.FAIL,
+                      message: "Invalid Details "
+                    });
+                  }
+                }
+              }
+            );
+          } else {
+            response.status(appCodes.RESOURCE_NOT_FOUND).json({
+              status: appCodes.FAIL,
+              message: "Invalid Password "
+            });
+          }
+        } else {
+          response.status(appCodes.RESOURCE_NOT_FOUND).json({
+            status: appCodes.FAIL,
+            message: "Invalid adminid "
           });
         }
       }
@@ -187,10 +252,18 @@ const adminOperations = {
         });
       } else {
         if (doc) {
+          var arr = new Array();
+          for (let i = 0; i < doc.length; i++) {
+            arr.push({
+              name: doc[i].name,
+              isFirstTym: doc[i].isFirstTym,
+              adminid: doc[i].adminid
+            });
+          }
           response.status(appCodes.OK).json({
             status: appCodes.SUCCESS,
             message: "Docs Found ",
-            record: doc
+            record: arr
           });
         } else {
           response.status(appCodes.RESOURCE_NOT_FOUND).json({
@@ -246,7 +319,7 @@ const adminOperations = {
 
             response.status(appCodes.OK).json({
               status: appCodes.SUCCESS,
-              userid: doc.userid
+              adminid: doc.userid
             });
           } else {
             response.status(appCodes.RESOURCE_NOT_FOUND).json({

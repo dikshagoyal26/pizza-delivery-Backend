@@ -29,7 +29,7 @@ var OrderSchema = new Schema({
   },
   address: [
     {
-      type: {
+      addtype: {
         type: String,
         required: true
       },

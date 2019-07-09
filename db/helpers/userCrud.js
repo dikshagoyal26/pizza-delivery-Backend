@@ -10,7 +10,7 @@ const userOperations = {
       //password encryption
       userObject.password
     );
-    UserModel.create(userObject, err => {
+    UserModel.create(userObject, (err) => {
       if (err) {
         console.log("Error in Record Add");
         response.status(appCodes.SERVER_ERROR).json({
@@ -41,7 +41,8 @@ const userOperations = {
 
           response.status(appCodes.OK).json({
             status: appCodes.SUCCESS,
-            userid: doc.userid
+            userid: doc.userid,
+            record: doc
           });
         } else {
           response.status(appCodes.RESOURCE_NOT_FOUND).json({
@@ -86,7 +87,6 @@ const userOperations = {
     );
   },
   update(userObject, response) {
-    userObject.password = encryptOperations.encrypt(userObject.password);
     UserModel.findOneAndUpdate(
       { userid: userObject.userid },
       { $set: userObject },
@@ -117,7 +117,7 @@ const userOperations = {
     );
   },
   delteone(userObject, response) {
-    UserModel.findOneAndRemove({ userid: userObject.userid }, err => {
+    UserModel.findOneAndRemove({ userid: userObject.userid }, (err) => {
       if (err) {
         response.status(appCodes.RESOURCE_NOT_FOUND).json({
           status: appCodes.FAIL,
@@ -132,7 +132,7 @@ const userOperations = {
       }
     });
   },
-  search(userObject, response) {
+  login(userObject, response) {
     UserModel.findOne({ userid: userObject.userid }, (err, doc) => {
       //match userid
       if (err) {
@@ -164,6 +164,67 @@ const userOperations = {
           response.status(appCodes.RESOURCE_NOT_FOUND).json({
             status: appCodes.FAIL,
             message: "Invalid Userid or Password "
+          });
+        }
+      }
+    });
+  },
+  changepwd(userObject, response) {
+    UserModel.findOne({ userid: userObject.userid }, (err, doc) => {
+      if (err) {
+        console.log("Error in Email Search");
+        response.status(appCodes.SERVER_ERROR).json({
+          status: appCodes.ERROR,
+          message: "Email Not Searched Due to Error"
+        });
+      } else {
+        if (doc) {
+          console.log("Email found");
+
+          if (
+            encryptOperations.compareHash(userObject.oldpassword, doc.password)
+          ) {
+            userObject.password = encryptOperations.encryptPassword(
+              userObject.password
+            );
+            UserModel.findOneAndUpdate(
+              { userid: userObject.userid },
+              { $set: userObject },
+              { upsert: true },
+              (err, doc) => {
+                if (err) {
+                  console.log("Error in Record Update", err);
+                  response.status(appCodes.SERVER_ERROR).json({
+                    status: appCodes.ERROR,
+                    message: "Record not updated Due to Error"
+                  });
+                } else {
+                  if (doc) {
+                    console.log("Record Deleted ");
+
+                    response.status(appCodes.OK).json({
+                      status: appCodes.SUCCESS,
+                      userid: doc.userid
+                    });
+                  } else {
+                    response.status(appCodes.RESOURCE_NOT_FOUND).json({
+                      status: appCodes.FAIL,
+                      message: "Invalid Details "
+                    });
+                  }
+                }
+              }
+            );
+          } else {
+            response.status(appCodes.RESOURCE_NOT_FOUND).json({
+              status: appCodes.FAIL,
+              message: "Invalid Password "
+            });
+          }
+        } else {
+          response.status(appCodes.RESOURCE_NOT_FOUND).json({
+            status: appCodes.FAIL,
+            message: "Invalid Userid "
           });
         }
       }
