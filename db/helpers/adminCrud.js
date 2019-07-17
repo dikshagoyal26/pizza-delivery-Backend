@@ -46,6 +46,7 @@ const adminOperations = {
       }
     });
   },
+  //chng pwd as per req
   changepwd(adminObject, response) {
     AdminModel.findOne({ adminid: adminObject.adminid }, (err, doc) => {
       if (err) {
@@ -131,6 +132,7 @@ const adminOperations = {
       }
     });
   },
+  //frsttym=true
   updatepwd(adminObject, response) {
     adminObject.password = encryptOperations.encryptPassword(
       //password encryption

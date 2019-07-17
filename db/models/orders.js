@@ -12,6 +12,9 @@ var OrderSchema = new Schema({
       },
       qty: {
         type: Number
+      },
+      name: {
+        type: String
       }
     }
   ],

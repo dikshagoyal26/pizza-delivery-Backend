@@ -17,4 +17,16 @@ adminRoute.get("/product", (req, res) => {
   salesCrud.product(res);
 });
 
+//@route Get /admin/sales/countusers
+//@desc Display Count of users to admin route
+//@access Private
+adminRoute.get("/countusers", (req, res) => {
+  users = salesCrud.countusers(res);
+});
+//@route Get /admin/sales/countproducts
+//@desc Display Count of products to admin route
+//@access Private
+adminRoute.get("/countproducts", (req, res) => {
+  products = salesCrud.countproducts(res);
+});
 module.exports = adminRoute;

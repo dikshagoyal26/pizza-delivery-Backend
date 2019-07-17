@@ -38,7 +38,7 @@ var userSchema = new Schema({
   },
   address: [
     {
-      type: {
+      typeof: {
         type: String
       },
       houseNo: {

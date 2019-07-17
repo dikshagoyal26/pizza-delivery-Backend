@@ -1,10 +1,15 @@
 const orderModel = require("../models/orders");
 const appCodes = require("../../utils/appcodes");
 const sendMail = require("../../utils/mail"); //nodemailer
-const uuid = require("uuid");
+const shortid = require("shortid");
+shortid.characters(
+  "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$@"
+);
+
 const orderOperations = {
   add(orderObject, response) {
-    orderObject.orderid = uuid("order", orderObject.userid);
+    orderObject.orderid = shortid.generate();
+    // orderObject.orderid = uuid("order", orderObject.userid);
     orderModel.create(orderObject, (err) => {
       if (err) {
         console.log("Error in Record Add");
