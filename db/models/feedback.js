@@ -17,10 +17,6 @@ var FeedbackSchema = new Schema({
     type: Date,
     default: Date.now()
   }
-  //,
-  // image: {
-  //   type: String
-  // }
 });
 
 const FeedbackModel = connection.model("feedbacks", FeedbackSchema);

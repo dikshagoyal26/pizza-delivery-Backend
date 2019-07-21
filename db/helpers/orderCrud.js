@@ -7,12 +7,12 @@ shortid.characters(
 );
 
 const orderOperations = {
+  //add order
   add(orderObject, response) {
     orderObject.orderid = shortid.generate();
-    // orderObject.orderid = uuid("order", orderObject.userid);
     orderModel.create(orderObject, (err) => {
       if (err) {
-        console.log("Error in Record Add");
+        console.log("Error in Record Add", err);
         response.status(appCodes.SERVER_ERROR).json({
           status: appCodes.ERROR,
           message: "Record Not Added Due to Error"
@@ -29,6 +29,7 @@ const orderOperations = {
       }
     });
   },
+  //update order
   update(orderObject, response) {
     orderModel.findOneAndUpdate(
       { orderid: orderObject.orderid },
@@ -59,6 +60,7 @@ const orderOperations = {
       }
     );
   },
+  //search for orders for any user
   search(userid, response) {
     orderModel.find({ userid: userid }, (err, doc) => {
       if (err) {
@@ -68,11 +70,61 @@ const orderOperations = {
         });
       } else {
         if (doc) {
-          response.status(appCodes.OK).json({
-            status: appCodes.SUCCESS,
-            message: "Orders for userid " + userid,
-            record: doc
-          });
+          console.log("doc is", doc);
+          var productarr = new Array();
+          var record = new Array();
+          for (let i = 0; i < doc.length; i++) {
+            for (let j = 0; j < doc[i].products.length; j++) {
+              const ProductModel = require("../models/product");
+              ProductModel.findOne(
+                { _id: doc[i].products[j].product_id },
+                (err, data) => {
+                  if (err) {
+                    response.status(appCodes.SERVER_ERROR).json({
+                      status: appCodes.ERROR,
+                      message: "Error in DB During Find Operation"
+                    });
+                  } else {
+                    if (data) {
+                      productarr.push({
+                        productid: data.productid,
+                        name: data.name,
+                        price: data.price,
+                        ingredients: data.ingredients,
+                        category: data.category,
+                        toppings: data.toppings,
+                        description: data.description,
+                        qty: doc[i].products[j].qty
+                      });
+                      record.push({
+                        orderid: doc[i].orderid,
+                        userid: doc[i].userid,
+                        date: doc[i].date,
+                        paymentmode: doc[i].paymentmode,
+                        address: doc[i].address,
+                        name: doc[i].name,
+                        total: doc[i].total,
+                        status: doc[i].status,
+                        productarr: productarr
+                      });
+                      if (i == doc.length - 1) {
+                        response.status(appCodes.OK).json({
+                          status: appCodes.SUCCESS,
+                          message: "Orders for userid " + userid,
+                          record: record
+                        });
+                      }
+                    } else {
+                      response.status(appCodes.RESOURCE_NOT_FOUND).json({
+                        status: appCodes.FAIL,
+                        message: "Invalid vehicleid  "
+                      });
+                    }
+                  }
+                }
+              );
+            }
+          }
         }
       }
     });

@@ -1,6 +1,7 @@
 const orderModel = require("../models/orders");
 const appCodes = require("../../utils/appcodes");
 const orderOperations = {
+  //to get monthly sales
   month(response) {
     orderModel.find({}, (err, doc) => {
       if (err) {
@@ -36,6 +37,7 @@ const orderOperations = {
       }
     });
   },
+  //to get product wise sales
   product(response) {
     orderModel.find({}, (err, doc) => {
       if (err) {
@@ -93,6 +95,7 @@ const orderOperations = {
       }
     });
   },
+  // get count of all users
   countusers(response) {
     const UserModel = require("../models/user");
     UserModel.find({}).exec((err, doc) => {
@@ -117,6 +120,7 @@ const orderOperations = {
       }
     });
   },
+  // get count of all products
   countproducts(response) {
     const ProductModel = require("../models/product");
     ProductModel.find({}).exec((err, doc) => {

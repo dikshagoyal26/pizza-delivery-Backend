@@ -1,6 +1,7 @@
 const cartModel = require("../models/cart");
 const appCodes = require("../../utils/appcodes");
 const cartOperations = {
+  //to add items to cart
   add(cartObject, response) {
     cartModel.findOne({ userid: cartObject.userid }, (err, doc) => {
       if (err) {
@@ -32,6 +33,7 @@ const cartOperations = {
       }
     });
   },
+  //update cart
   update(cartObject, data, response) {
     console.log("cartObject is", cartObject);
     console.log("cartObject products is", cartObject.products[0].productid);
@@ -47,7 +49,6 @@ const cartOperations = {
         data.products[i].total =
           parseInt(cartObject.products[0].qty) *
           parseInt(cartObject.products[0].price);
-        // cartModel.updateOne();
         objFound_bool = true;
       }
     }
@@ -85,6 +86,7 @@ const cartOperations = {
       }
     );
   },
+  //delete particular item from cart
   deleteone(cartObject, response) {
     cartModel.findOne({ userid: cartObject.userid }, (err, data) => {
       if (err) {
@@ -141,6 +143,7 @@ const cartOperations = {
       }
     });
   },
+  //delete cart
   deleteAll(cartObject, response) {
     cartModel.findOneAndRemove({ userid: cartObject.userid }, (err) => {
       if (err) {
@@ -157,9 +160,9 @@ const cartOperations = {
       }
     });
   },
+  //search cart
   search(cartObject, response) {
     cartModel.find({ userid: cartObject.userid }, (err, doc) => {
-      //match userid
       if (err) {
         response.status(appCodes.SERVER_ERROR).json({
           status: appCodes.ERROR,

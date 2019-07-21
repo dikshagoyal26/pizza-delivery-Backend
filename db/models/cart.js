@@ -2,7 +2,7 @@ var connection = require("../connection");
 const Schema = connection.Schema;
 var cartSchema = new Schema({
   userid: {
-    type: String //value will be _id of usermodel
+    type: String
   },
   name: {
     type: String
@@ -30,14 +30,7 @@ var cartSchema = new Schema({
         type: Number
       }
     }
-  ] //Products ka array
-
-  // },
-  // total:{
-  //     type: String,
-  //     required: true,
-  //     unique: true
-  // }
+  ]
 });
 
 const cartModel = connection.model("carts", cartSchema);

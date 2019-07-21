@@ -5,9 +5,9 @@ const tokenOperations = require("../../utils/token");
 const sendMail = require("../../utils/mail"); //nodemailer
 
 const adminOperations = {
+  // login
   login(adminObject, response) {
     AdminModel.findOne({ adminid: adminObject.adminid }, (err, doc) => {
-      //match adminid
       if (err) {
         response.status(appCodes.SERVER_ERROR).json({
           status: appCodes.ERROR,
@@ -46,7 +46,7 @@ const adminOperations = {
       }
     });
   },
-  //chng pwd as per req
+  // to chng pwd as per req
   changepwd(adminObject, response) {
     AdminModel.findOne({ adminid: adminObject.adminid }, (err, doc) => {
       if (err) {
@@ -108,10 +108,11 @@ const adminOperations = {
       }
     });
   },
+  // admin to add another admin
   add(adminObject, response) {
     if (adminObject.password) {
+      //password encryption
       adminObject.password = encryptOperations.encryptPassword(
-        //password encryption
         adminObject.password
       );
     }
@@ -132,7 +133,7 @@ const adminOperations = {
       }
     });
   },
-  //frsttym=true
+  // to login first time and set new pwd(firsttym=true)
   updatepwd(adminObject, response) {
     adminObject.password = encryptOperations.encryptPassword(
       //password encryption
@@ -173,6 +174,7 @@ const adminOperations = {
       }
     );
   },
+  //to update details
   update(adminObject, response) {
     if (adminObject.newadminid) {
       adminid = adminObject.newadminid;
@@ -214,6 +216,7 @@ const adminOperations = {
       }
     );
   },
+  //detele another admin when(frsttym=false)
   delete(adminObject, response) {
     AdminModel.findOne({ adminid: adminObject.adminid }, (err, doc) => {
       if (err) {
@@ -245,6 +248,7 @@ const adminOperations = {
       }
     });
   },
+  //to search for all admins
   search(response) {
     AdminModel.find({}, (err, doc) => {
       if (err) {
@@ -276,6 +280,7 @@ const adminOperations = {
       }
     });
   },
+  //to obtain list of orders
   orderSearch(response) {
     const OrderModel = require("../models/orders");
 
@@ -287,20 +292,66 @@ const adminOperations = {
         });
       } else {
         if (doc) {
-          response.status(appCodes.OK).json({
-            status: appCodes.SUCCESS,
-            message: "Docs Found ",
-            record: doc
-          });
-        } else {
-          response.status(appCodes.RESOURCE_NOT_FOUND).json({
-            status: appCodes.FAIL,
-            message: "Error "
-          });
+          console.log("doc is", doc);
+          var productarr = new Array();
+          var record = new Array();
+          for (let i = 0; i < doc.length; i++) {
+            for (let j = 0; j < doc[i].products.length; j++) {
+              const ProductModel = require("../models/product");
+              ProductModel.findOne(
+                { _id: doc[i].products[j].product_id },
+                (err, data) => {
+                  if (err) {
+                    response.status(appCodes.SERVER_ERROR).json({
+                      status: appCodes.ERROR,
+                      message: "Error in DB During Find Operation"
+                    });
+                  } else {
+                    if (data) {
+                      productarr.push({
+                        productid: data.productid,
+                        name: data.name,
+                        price: data.price,
+                        ingredients: data.ingredients,
+                        category: data.category,
+                        toppings: data.toppings,
+                        description: data.description,
+                        qty: doc[i].products[j].qty
+                      });
+                      record.push({
+                        orderid: doc[i].orderid,
+                        userid: doc[i].userid,
+                        date: doc[i].date,
+                        paymentmode: doc[i].paymentmode,
+                        address: doc[i].address,
+                        name: doc[i].name,
+                        total: doc[i].total,
+                        status: doc[i].status,
+                        productarr: productarr
+                      });
+                      if (i == doc.length - 1) {
+                        response.status(appCodes.OK).json({
+                          status: appCodes.SUCCESS,
+                          message: "Orders ",
+                          record: record
+                        });
+                      }
+                    } else {
+                      response.status(appCodes.RESOURCE_NOT_FOUND).json({
+                        status: appCodes.FAIL,
+                        message: "Invalid vehicleid  "
+                      });
+                    }
+                  }
+                }
+              );
+            }
+          }
         }
       }
     });
   },
+  //to update any particular order
   orderUpdate(orderObject, response) {
     const OrderModel = require("../models/orders");
 
@@ -333,6 +384,7 @@ const adminOperations = {
       }
     );
   },
+  //to search feedbacks
   feedbackSearch(response) {
     const FeedbackModel = require("../models/feedback");
 

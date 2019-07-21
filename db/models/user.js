@@ -4,18 +4,16 @@ var userSchema = new Schema({
   userid: {
     //Email
     //or googleID in case of auth register
-    type: String
-    // required: true,
-    //unique: true
+    type: String,
+    required: true,
+    unique: true
   },
   password: {
-    type: String
-    // required: true
-    // default: "ABCD"
+    type: String,
+    required: true
   },
   firstname: {
     type: String
-    // required: true
   },
   lastname: {
     type: String

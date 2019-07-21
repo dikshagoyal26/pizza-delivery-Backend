@@ -2,18 +2,10 @@ const express = require("express");
 const authRoute = express.Router();
 const userCrud = require("../../db/helpers/userCrud");
 
-const validateRegisterInput = require("../../validation/register");
-const validateLoginInput = require("../../validation/login");
-
 //@route Post /user/register
 //@desc Register users route
 //@access Public
 authRoute.post("/register", (request, response) => {
-  // console.log("request is", request.body);
-  // const { errors, isValid } = validateRegisterInput(request.body);
-  // if (!isValid) {
-  //   return response.status(400).json(errors);
-  // }
   var json = request.body;
   userCrud.add(json, response);
 });
@@ -22,10 +14,6 @@ authRoute.post("/register", (request, response) => {
 //@desc Login users route
 //@access Public
 authRoute.post("/login", (request, response) => {
-  // const { errors, isValid } = validateLoginInput(request.body);
-  // if (!isValid) {
-  //   return response.status(404).json(errors);
-  // }
   const json = request.body;
   userCrud.login(json, response);
 });

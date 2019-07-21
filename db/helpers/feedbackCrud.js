@@ -1,9 +1,10 @@
 const feedbackModel = require("../models/feedback");
 const appCodes = require("../../utils/appcodes");
-const sendMail = require("../../utils/mail"); //nodemailer
+const sendMail = require("../../utils/mail");
 const uuid = require("uuid");
 
 const feedbackOperations = {
+  //to add feedback
   add(feedbackObject, response) {
     feedbackObject.feedbackid = uuid("feedback", feedbackObject.userid);
     feedbackModel.create(feedbackObject, (err) => {
@@ -25,6 +26,7 @@ const feedbackOperations = {
       }
     });
   },
+  //to update any feedback
   update(feedbackObject, response) {
     feedbackModel.findOneAndUpdate(
       { feedbackid: feedbackObject.feedbackid },
@@ -55,6 +57,7 @@ const feedbackOperations = {
       }
     );
   },
+  //to delete any feedback
   delete(feedbackObject, response) {
     feedbackModel.findOneAndRemove(
       { feedbackid: feedbackObject.feedbackid },
@@ -74,6 +77,7 @@ const feedbackOperations = {
       }
     );
   },
+  //to search for feedbacks for any user
   search(feedbackObject, response) {
     feedbackModel.find({ userid: feedbackObject.userid }, (err, doc) => {
       //match userid

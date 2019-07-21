@@ -1,4 +1,4 @@
-const express = require("express"); //create //view //cancel
+const express = require("express");
 const orderRoute = express.Router();
 const orderCrud = require("../../db/helpers/orderCrud");
 

@@ -5,9 +5,10 @@ const tokenOperations = require("../../utils/token");
 const sendMail = require("../../utils/mail"); //nodemailer
 
 const userOperations = {
+  //to register new user
   add(userObject, response) {
+    //password encryption
     userObject.password = encryptOperations.encryptPassword(
-      //password encryption
       userObject.password
     );
     UserModel.create(userObject, (err) => {
@@ -27,6 +28,7 @@ const userOperations = {
       }
     });
   },
+  // to find email id of user if he forget pwd
   findid(userObject, response) {
     UserModel.findOne({ userid: userObject.userid }, (err, doc) => {
       if (err) {
@@ -53,6 +55,7 @@ const userOperations = {
       }
     });
   },
+  //to reset forgotten pwd
   resetpwd(userObject, response) {
     console.log("reset pwd");
     userObject.password = encryptOperations.encrypt(userObject.password);
@@ -86,6 +89,7 @@ const userOperations = {
       }
     );
   },
+  //to update details
   update(userObject, response) {
     UserModel.findOneAndUpdate(
       { userid: userObject.userid },
@@ -116,6 +120,7 @@ const userOperations = {
       }
     );
   },
+  //to remove user
   delteone(userObject, response) {
     UserModel.findOneAndRemove({ userid: userObject.userid }, (err) => {
       if (err) {
@@ -132,9 +137,9 @@ const userOperations = {
       }
     });
   },
+  //user login
   login(userObject, response) {
     UserModel.findOne({ userid: userObject.userid }, (err, doc) => {
-      //match userid
       if (err) {
         response.status(appCodes.SERVER_ERROR).json({
           status: appCodes.ERROR,
@@ -143,7 +148,7 @@ const userOperations = {
       } else {
         if (doc) {
           if (
-            encryptOperations.compareHash(userObject.password, doc.password) //match pwd
+            encryptOperations.compareHash(userObject.password, doc.password)
           ) {
             token = tokenOperations.generateToken({
               userid: userObject.userid
@@ -169,6 +174,7 @@ const userOperations = {
       }
     });
   },
+  //to change pwd
   changepwd(userObject, response) {
     UserModel.findOne({ userid: userObject.userid }, (err, doc) => {
       if (err) {

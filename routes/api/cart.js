@@ -35,11 +35,11 @@ cartRoute.delete("/deleteAll", (req, res) => {
   cartCrud.deleteAll(json, res);
 });
 
-// //@route Put /cart/update
-// //@desc Update cart route
-// //@access Private
-// cartRoute.put("/update", (req, res) => {
-//   const json = req.body;
-//   cartCrud.update(json, res);
-// });
+//@route Put /cart/update
+//@desc Update cart route
+//@access Private
+cartRoute.put("/update", (req, res) => {
+  const json = req.body;
+  cartCrud.update(json, res);
+});
 module.exports = cartRoute;

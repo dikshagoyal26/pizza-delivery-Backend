@@ -4,12 +4,13 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const cookieSession = require("cookie-session");
 const passport = require("passport");
+const morgan = require("morgan");
 app.use(cors());
 
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
+app.use(morgan("dev"));
 const googleSetup = require("./utils/googlepassport");
 app.use(express.static("public"));
 app.use(
@@ -19,7 +20,6 @@ app.use(
   })
 );
 app.use(passport.initialize());
-//app.use(require("./utils/cors"));
 app.use("/admin", require("./routes/api/admin"));
 app.use("/user", require("./routes/api/user"));
 app.use("/auth", require("./routes/api/auth"));
@@ -36,7 +36,7 @@ app.use("/cart", require("./routes/api/cart"));
 app.use("/orders", require("./routes/api/order"));
 
 app.use((req, res) => {
-  res.send("you have typed something wrong");
+  res.send("OOPs!!! you have typed something wrong");
 });
 
 var PORT = process.env.PORT || 5000;
