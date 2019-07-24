@@ -20,7 +20,7 @@ adminRoute.post("/add", (req, res) => {
 //@route Delete /admin/admins/delete
 //@desc delete admin from admin route
 //@access Private
-adminRoute.delete("/delete", (req, res) => {
+adminRoute.post("/delete", (req, res) => {
   const json = req.body;
   adminCrud.delete(json, res);
 });

@@ -45,7 +45,7 @@ authRoute.put("/changepwd", (req, res) => {
 //@route Post /user/deleteone
 //@desc delete user account users route
 //@access Private
-authRoute.delete("/deleteone", (req, res) => {
+authRoute.post("/deleteone", (req, res) => {
   let data = req.body;
   userCrud.delteone(data, res);
 });

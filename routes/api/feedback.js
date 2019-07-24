@@ -21,7 +21,7 @@ feedbackRoute.get("/search", (req, res) => {
 //@route Delete /feedback/delete
 //@desc Delete product from feedback route
 //@access Private
-feedbackRoute.delete("/delete", (req, res) => {
+feedbackRoute.post("/delete", (req, res) => {
   const json = req.body;
   feedbackCrud.delete(json, res);
 });

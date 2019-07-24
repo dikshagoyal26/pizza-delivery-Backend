@@ -22,7 +22,7 @@ cartRoute.get("/search", (req, res) => {
 //@route Delete /cart/delete
 //@desc Delete product from cart route
 //@access Private
-cartRoute.delete("/deleteOne", (req, res) => {
+cartRoute.post("/deleteOne", (req, res) => {
   const json = req.body;
   cartCrud.deleteone(json, res);
 });
@@ -30,7 +30,7 @@ cartRoute.delete("/deleteOne", (req, res) => {
 //@route Delete /cart/delete
 //@desc Delete product from cart route
 //@access Private
-cartRoute.delete("/deleteAll", (req, res) => {
+cartRoute.post("/deleteAll", (req, res) => {
   const json = req.body;
   cartCrud.deleteAll(json, res);
 });
