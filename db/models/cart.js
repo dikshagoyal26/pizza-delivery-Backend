@@ -28,6 +28,10 @@ var cartSchema = new Schema({
       },
       total: {
         type: Number
+      },
+      product_id: {
+        type: Schema.Types.ObjectId,
+        ref: "products"
       }
     }
   ]
