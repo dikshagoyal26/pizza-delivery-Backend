@@ -19,7 +19,7 @@ const orderOperations = {
         });
       } else {
         console.log("Record Added..");
-        sendMail(userObject.userid, "order");
+        sendMail(orderObject.userid, "order");
 
         response.status(appCodes.OK).json({
           status: appCodes.SUCCESS,
