@@ -1,5 +1,5 @@
 const mailKeys = {
-  user: "dikshagoyal2612@gmail.com",
-  pass: "dikshag2612"
+  user: "dg.dikshag2612@gmail.com",
+  pass: "gdiksha#6990"
 };
 module.exports = mailKeys;

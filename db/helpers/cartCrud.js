@@ -102,7 +102,7 @@ const cartOperations = {
             if (
               data.products[i].productid == cartObject.products[0].productid
             ) {
-              data.products[i].splice(i, 1);
+              data.products.splice(i, 1);
               break;
             }
           }
