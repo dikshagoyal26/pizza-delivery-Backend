@@ -283,73 +283,29 @@ const adminOperations = {
   //to obtain list of orders
   orderSearch(response) {
     const OrderModel = require("../models/orders");
-
-    OrderModel.find({}, (err, doc) => {
-      if (err) {
-        response.status(appCodes.SERVER_ERROR).json({
-          status: appCodes.ERROR,
-          message: "Error in DB During Find Operation"
-        });
-      } else {
-        if (doc) {
-          console.log("doc is", doc);
-          var productarr = new Array();
-          var record = new Array();
-          for (let i = 0; i < doc.length; i++) {
-            for (let j = 0; j < doc[i].products.length; j++) {
-              const ProductModel = require("../models/product");
-              ProductModel.findOne(
-                { _id: doc[i].products[j].product_id },
-                (err, data) => {
-                  if (err) {
-                    response.status(appCodes.SERVER_ERROR).json({
-                      status: appCodes.ERROR,
-                      message: "Error in DB During Find Operation"
-                    });
-                  } else {
-                    if (data) {
-                      productarr.push({
-                        productid: data.productid,
-                        name: data.name,
-                        price: data.price,
-                        ingredients: data.ingredients,
-                        category: data.category,
-                        toppings: data.toppings,
-                        description: data.description,
-                        qty: doc[i].products[j].qty
-                      });
-                      record.push({
-                        orderid: doc[i].orderid,
-                        userid: doc[i].userid,
-                        date: doc[i].date,
-                        paymentmode: doc[i].paymentmode,
-                        address: doc[i].address,
-                        name: doc[i].name,
-                        total: doc[i].total,
-                        status: doc[i].status,
-                        productarr: productarr
-                      });
-                      if (i == doc.length - 1) {
-                        response.status(appCodes.OK).json({
-                          status: appCodes.SUCCESS,
-                          message: "Orders ",
-                          record: record
-                        });
-                      }
-                    } else {
-                      response.status(appCodes.RESOURCE_NOT_FOUND).json({
-                        status: appCodes.FAIL,
-                        message: "Invalid vehicleid  "
-                      });
-                    }
-                  }
-                }
-              );
-            }
+    OrderModel.find({})
+      .populate("products.product_id")
+      .exec(function(err, data) {
+        if (err) {
+          response.status(appCodes.SERVER_ERROR).json({
+            status: appCodes.ERROR,
+            message: "Error in DB During Find Operation"
+          });
+        } else {
+          if (data) {
+            response.status(appCodes.OK).json({
+              status: appCodes.SUCCESS,
+              message: "Orders ",
+              record: data
+            });
+          } else {
+            response.status(appCodes.RESOURCE_NOT_FOUND).json({
+              status: appCodes.FAIL,
+              message: "Invalid details  "
+            });
           }
         }
-      }
-    });
+      });
   },
   //to update any particular order
   orderUpdate(orderObject, response) {
